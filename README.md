@@ -11,3 +11,8 @@ TODO
 
 ###流量监控
 1. 
+
+###SuperDebug
+1. 获取某个类的实例个数
+2. Hierarchy里的printView
+3. 增加远程调用View方法

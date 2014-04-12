@@ -6,7 +6,8 @@ TODO
 3. 添加字体选项
 4. 备份聊天记录
 5. 更改头像
-
+6. AutoImageSearch
+7. GridView 通讯录
 
 ###流量监控
 1. 

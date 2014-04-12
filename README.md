@@ -10,12 +10,16 @@ TODO
 7. GridView 通讯录
 
 ###流量监控
-1. 
+
 
 ###SuperDebug
 1. 获取某个类的实例个数
 2. Hierarchy里的printView
 3. 增加远程调用View方法
+
+###Tricks
+1. Disable ANR
+2. 
 
 ###主题机制
 1. 使用变色龙的主题机制

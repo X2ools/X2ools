@@ -1,5 +1,9 @@
 <resources>
 
     <string name="app_name">X2ools</string>
+    <string name="remove_game">移除游戏</string>
+    <string name="font">字体</string>
+    <string name="font_summary">修改聊天字体</string>
+    <string name="wechat">微信</string>
 
 </resources>

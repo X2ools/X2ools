@@ -16,52 +16,47 @@
  * limitations under the License.
  */
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <PreferenceCategory
+        android:key="category_wechat"
+        android:title="@string/wechat" >
+        <SwitchPreference
+            DroidSansFallback.ttf=""
+            android:defaultValue="true"
+            android:key="wechat_remvoe_game"
+            android:title="@string/remove_game" />
 
-    <!-- Emergency alert settings for ETWS. -->
-    <PreferenceCategory 
-        android:title="微信"
-        android:key="category_wechat">
-
-        <CheckBoxPreference 
-            android:defaultValue="false"
-            android:key="enable_wechat"
-            android:summary="更改微信聊天字体,添加快捷方式等"
-            android:title="开启微信" />
-
+        <EditTextPreference
+            android:defaultValue="/sdcard/X2ools/chat_font.ttf"
+            android:key="wechat_chat_font"
+            android:summary="@string/font_summary"
+            android:title="@string/font" />
     </PreferenceCategory>
-
-    <PreferenceCategory 
-        android:title="微博"
-        android:key="category_weibo">
-
-        <CheckBoxPreference 
+    <PreferenceCategory
+        android:key="category_weibo"
+        android:title="微博" >
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_wechat"
             android:summary="去除广告等"
             android:title="开启微博" />
-
     </PreferenceCategory>
-    
-    <PreferenceCategory 
-        android:title="流量监控"
-        android:key="category_netmgr">
-        
+    <PreferenceCategory
+        android:key="category_netmgr"
+        android:title="流量监控" >
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_netmgr"
             android:title="开启流量监控" />
     </PreferenceCategory>
-   
-    <PreferenceCategory 
-        android:title="超级调试"
-        android:key="category_superdebug">
-        
+    <PreferenceCategory
+        android:key="category_superdebug"
+        android:title="超级调试" >
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="enable_superdebug"
             android:title="开启超级调试" />
     </PreferenceCategory>
-    
+
 </PreferenceScreen>

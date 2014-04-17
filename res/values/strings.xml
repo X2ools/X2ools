@@ -5,5 +5,7 @@
     <string name="font">字体</string>
     <string name="font_summary">修改聊天字体</string>
     <string name="wechat">微信</string>
+    <string name="wechat_scan">二维码</string>
+    <string name="wechat_scan_summary">在状态栏添加二维码快捷方式</string>
 
 </resources>

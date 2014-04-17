@@ -24,7 +24,7 @@
         <SwitchPreference
             DroidSansFallback.ttf=""
             android:defaultValue="true"
-            android:key="wechat_remvoe_game"
+            android:key="wechat_remove_game"
             android:title="@string/remove_game" />
 
         <EditTextPreference
@@ -32,6 +32,12 @@
             android:key="wechat_chat_font"
             android:summary="@string/font_summary"
             android:title="@string/font" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="wechat_scan"
+            android:summary="@string/wechat_scan_summary"
+            android:title="@string/wechat_scan" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="category_weibo"

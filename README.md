@@ -8,6 +8,7 @@ TODO
 5. 更改头像
 6. AutoImageSearch
 7. GridView 通讯录
+8. 换肤机制
 
 ###流量监控
 1. 悬浮窗调节当前应用的流量数据开关

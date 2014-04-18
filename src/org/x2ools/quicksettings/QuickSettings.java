@@ -128,9 +128,7 @@ public class QuickSettings {
 			scanTile.setupQuickSettingsTile(mContainerView, inflater,
 					mQuickSettings);
 
-			if (!json.getBoolean(X2oolsActivity.KEY_WECHAT_SCAN)) {
-				scanTile.removeFromContainer(mContainerView);
-			}
+			scanTile.setVisibility(mContainerView, json.getBoolean(X2oolsActivity.KEY_WECHAT_SCAN));
 		}
 	};
 
@@ -138,11 +136,7 @@ public class QuickSettings {
 		if (mContainerView == null)
 			return;
 
-		if (canAddScanTile) {
-			scanTile.reAddFromContainer(mContainerView);
-		} else {
-			scanTile.removeFromContainer(mContainerView);
-		}
+		scanTile.setVisibility(mContainerView, canAddScanTile);
 	}
 
 	public static class TileLayout {

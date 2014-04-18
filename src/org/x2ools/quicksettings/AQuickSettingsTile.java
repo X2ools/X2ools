@@ -54,7 +54,7 @@ public abstract class AQuickSettingsTile implements OnClickListener {
 		onTilePostCreate();
 	}
 	
-	public void removeFromContainer(ViewGroup mContainerView) {
+	public void setVisibility(ViewGroup mContainerView, boolean visible) {
 		Resources res = mContainerView.getResources();
 		int orientation = res.getConfiguration().orientation;
 
@@ -64,22 +64,11 @@ public abstract class AQuickSettingsTile implements OnClickListener {
 		TileLayout tl = new TileLayout(mContainerView.getContext(),
 				mNumColumns, orientation, TileLayout.LabelStyle.ALLCAPS);
 		
-		mContainerView.removeView(mTile);
-		updateLayout(tl);
-		((FrameLayout) mContainerView).requestLayout();
-	}
-	
-	public void reAddFromContainer(ViewGroup mContainerView) {
-		Resources res = mContainerView.getResources();
-		int orientation = res.getConfiguration().orientation;
-
-		int mNumColumns = XposedHelpers.getIntField(mContainerView,
-				"mNumColumns");
-
-		TileLayout tl = new TileLayout(mContainerView.getContext(),
-				mNumColumns, orientation, TileLayout.LabelStyle.ALLCAPS);
-		
-		mContainerView.addView(mTile);
+		if(visible) {
+			mContainerView.addView(mTile);
+		} else {
+			mContainerView.removeView(mTile);
+		}
 		updateLayout(tl);
 		((FrameLayout) mContainerView).requestLayout();
 	}

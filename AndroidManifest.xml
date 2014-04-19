@@ -21,7 +21,7 @@
         <meta-data
             android:name="xposedminversion"
             android:value="30+" />
-        <meta-datauses-sdk
+        <meta-data
             android:name="xposeddescription"
             android:value="Customization of tools like Wechat, Weibo, and UI development \n(by JDSong and bjzhou)" />
         

@@ -9,6 +9,7 @@ TODO
 6. AutoImageSearch
 7. GridView 通讯录
 8. 换肤机制
+9. 假的赞，模拟出很多赞
 
 ###流量监控
 1. 悬浮窗调节当前应用的流量数据开关
@@ -33,4 +34,6 @@ TODO
 
 ###XPosed优化
 1. 可以不重启直接用(考虑adb shell killall, 用另一个条调试用apk等方法)
-2. 
+
+###SuperSearch
+1.T9 search anything

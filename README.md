@@ -18,15 +18,19 @@ TODO
 1. 获取某个类的实例个数
 2. Hierarchy里的printView
 3. 增加远程调用View方法
+4. 使普通应用拥有system以及signature权限
 
 ###Tricks
 1. Disable ANR
-2. 
 
 ###主题机制
 1. 使用变色龙的主题机制
 2. 透明Activity
-3. 
 
 ###设置
 1. 使用Holo主题
+2. Search and Jump to Settings
+
+###XPosed优化
+1. 可以不重启直接用(考虑adb shell killall, 用另一个条调试用apk等方法)
+2. 

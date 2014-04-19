@@ -16,7 +16,6 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResou
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class WeChat {
-
 	public static final String PACKAGE_NAME = "com.tencent.mm";
 
 	public static final String CLASS_SETTINGS_ABOUT_SYSTEM_UI = "com.tencent.mm.ui.setting.SettingsAboutSystemUI";
@@ -91,5 +90,4 @@ public class WeChat {
 				});
 
 	}
-
 }

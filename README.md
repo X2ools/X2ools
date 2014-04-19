@@ -30,10 +30,16 @@ Roadmap
 ###设置
 1. 使用Holo主题
 2. Search and Jump to Settings
-3. 当前活动进程的相关操作
+
+###情境相关操作
+1. 当前活动进程的相关操作
     1. 显示当前APP信息
     2. 强行关闭当前应用(foreceStopPackage)
-    3. 
+    3. 跳转到
+
+###全局手势操作 
+1. 定义常见手势
+2. 每个手势可以有相应操作执行一些Task
 
 ###XPosed优化
 1. 可以不重启直接用(考虑adb shell killall, 用另一个条调试用apk等方法)

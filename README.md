@@ -1,4 +1,4 @@
-TODO
+Roadmap
 ====
 ###微信
 1. 添加扫二维码快捷方式
@@ -30,7 +30,11 @@ TODO
 ###设置
 1. 使用Holo主题
 2. Search and Jump to Settings
+3. 当前活动进程的相关操作
+    1. 显示当前APP信息
+    2. 强行关闭当前应用(foreceStopPackage)
+    3. 
 
 ###XPosed优化
 1. 可以不重启直接用(考虑adb shell killall, 用另一个条调试用apk等方法)
-2. 
+2.  

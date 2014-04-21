@@ -16,78 +16,65 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResou
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class WeChat {
-	public static final String PACKAGE_NAME = "com.tencent.mm";
+    public static final String PACKAGE_NAME = "com.tencent.mm";
 
-	public static final String CLASS_SETTINGS_ABOUT_SYSTEM_UI = "com.tencent.mm.ui.setting.SettingsAboutSystemUI";
-	public static final String CLASS_MM_TEXTVIEW = "com.tencent.mm.ui.base.MMTextView";
-	public static final String CLASS_FIND_MORE_FRIENDS_UI = "com.tencent.mm.ui.pluginapp.FindMoreFriendsUI";
-	public static final String CLASS_PREFERENCE = "com.tencent.mm.ui.base.preference.Preference";
-	public static final String CLASS_PREFERENCE_TITLE_CATEGORY = "com.tencent.mm.ui.base.preference.PreferenceTitleCategory";
+    public static final String CLASS_SETTINGS_ABOUT_SYSTEM_UI = "com.tencent.mm.ui.setting.SettingsAboutSystemUI";
+    public static final String CLASS_MM_TEXTVIEW = "com.tencent.mm.ui.base.MMTextView";
+    public static final String CLASS_FIND_MORE_FRIENDS_UI = "com.tencent.mm.ui.pluginapp.FindMoreFriendsUI";
+    public static final String CLASS_PREFERENCE = "com.tencent.mm.ui.base.preference.Preference";
+    public static final String CLASS_PREFERENCE_TITLE_CATEGORY = "com.tencent.mm.ui.base.preference.PreferenceTitleCategory";
 
-	private static JSONObject json = null;
+    private static JSONObject json = null;
 
-	public static void initZygote(StartupParam startupParam) throws Throwable {
-		// TODO Auto-generated method stub
+    public static void initZygote(StartupParam startupParam) throws Throwable {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	public static void handleInitPackageResources(
-			InitPackageResourcesParam resparam) throws Throwable {
+    public static void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
 
-		if (!resparam.packageName.equals(PACKAGE_NAME))
-			return;
+        if (!resparam.packageName.equals(PACKAGE_NAME))
+            return;
 
-	}
+    }
 
-	// FIXME only work for wechat version 5.2.1,versioncode 400
-	public static void handleLoadPackage(final LoadPackageParam lpparam)
-			throws Throwable {
+    // FIXME only work for wechat version 5.2.1,versioncode 400
+    public static void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
 
-		if (!lpparam.packageName.equals(PACKAGE_NAME))
-			return;
+        if (!lpparam.packageName.equals(PACKAGE_NAME))
+            return;
 
-		json = X2ools.getJsonPrefs();
+        json = X2ools.getJsonPrefs();
 
-		Class<?> mmTextViewClz = XposedHelpers.findClass(CLASS_MM_TEXTVIEW,
-				lpparam.classLoader);
-		Class<?> findMoreFriendsUI = XposedHelpers.findClass(
-				CLASS_FIND_MORE_FRIENDS_UI, lpparam.classLoader);
+        Class<?> mmTextViewClz = XposedHelpers.findClass(CLASS_MM_TEXTVIEW, lpparam.classLoader);
+        Class<?> findMoreFriendsUI = XposedHelpers.findClass(CLASS_FIND_MORE_FRIENDS_UI, lpparam.classLoader);
 
-		// change chatting font
-		XposedHelpers.findAndHookMethod(mmTextViewClz, "init",
-				new XC_MethodHook() {
+        // change chatting font
+        XposedHelpers.findAndHookMethod(mmTextViewClz, "init", new XC_MethodHook() {
 
-					@Override
-					protected void afterHookedMethod(MethodHookParam param)
-							throws Throwable {
-						TextView tv = (TextView) param.thisObject;
-						if (json != null) {
-							String font = URLDecoder.decode((String) json
-									.get(X2oolsActivity.KEY_WECHAT_CHAT_FONT),
-									"UTF-8");
-							if (!TextUtils.isEmpty(font))
-								tv.setTypeface(Typeface.createFromFile(font));
-						}
-					}
-				});
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                TextView tv = (TextView) param.thisObject;
+                if (json != null) {
+                    String font = URLDecoder.decode((String) json.get(X2oolsActivity.KEY_WECHAT_CHAT_FONT), "UTF-8");
+                    if (!TextUtils.isEmpty(font))
+                        tv.setTypeface(Typeface.createFromFile(font));
+                }
+            }
+        });
 
-		// remove game plugin
-		XposedHelpers.findAndHookMethod(findMoreFriendsUI, "aNn",
-				new XC_MethodHook() {
+        // remove game plugin
+        XposedHelpers.findAndHookMethod(findMoreFriendsUI, "aNn", new XC_MethodHook() {
 
-					@Override
-					protected void afterHookedMethod(MethodHookParam param)
-							throws Throwable {
-						Object cFy = XposedHelpers.getObjectField(
-								param.thisObject, "cFy");
-						if (json != null) {
-							boolean canRemove = json
-									.getBoolean(X2oolsActivity.KEY_WECHAT_REMOVE_GAME);
-							XposedHelpers.callMethod(cFy, "S",
-									"more_tab_game_recommend", canRemove);
-						}
-					}
-				});
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Object cFy = XposedHelpers.getObjectField(param.thisObject, "cFy");
+                if (json != null) {
+                    boolean canRemove = json.getBoolean(X2oolsActivity.KEY_WECHAT_REMOVE_GAME);
+                    XposedHelpers.callMethod(cFy, "S", "more_tab_game_recommend", canRemove);
+                }
+            }
+        });
 
-	}
+    }
 }

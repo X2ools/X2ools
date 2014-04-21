@@ -1,4 +1,3 @@
-
 package org.x2ools;
 
 import java.io.BufferedReader;
@@ -22,10 +21,9 @@ import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources,
-        IXposedHookLoadPackage {
-	
-	public static final String PACKAGE_NAME = X2ools.class.getPackage().getName();
+public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources, IXposedHookLoadPackage {
+
+    public static final String PACKAGE_NAME = X2ools.class.getPackage().getName();
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -45,29 +43,29 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
         SuperDebug.handleLoadPackage(lpparam);
         QuickSettings.handleLoadPackage(lpparam);
     }
-    
+
     public static JSONObject getJsonPrefs() {
-    	JSONObject json = null;
+        JSONObject json = null;
         try {
-			File jsonFile = new File(Environment.getExternalStorageDirectory()+"/X2ools/prefs.json");
-			InputStreamReader isr = new InputStreamReader(new FileInputStream(jsonFile));
-			BufferedReader bufferedReader = new BufferedReader(isr);
-			String receiveString = "";
-			StringBuilder stringBuilder = new StringBuilder();
+            File jsonFile = new File(Environment.getExternalStorageDirectory() + "/X2ools/prefs.json");
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(jsonFile));
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            String receiveString = "";
+            StringBuilder stringBuilder = new StringBuilder();
 
-			while ( (receiveString = bufferedReader.readLine()) != null ) {
-			    stringBuilder.append(receiveString);
-			}
+            while ((receiveString = bufferedReader.readLine()) != null) {
+                stringBuilder.append(receiveString);
+            }
 
-			if(!TextUtils.isEmpty(stringBuilder))
-				json = new JSONObject(stringBuilder.toString());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+            if (!TextUtils.isEmpty(stringBuilder))
+                json = new JSONObject(stringBuilder.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return json;
     }
 

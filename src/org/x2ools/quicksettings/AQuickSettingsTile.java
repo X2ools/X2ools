@@ -50,6 +50,7 @@ public abstract class AQuickSettingsTile implements OnClickListener {
         mTile.setOnClickListener(this);
         mTile.setOnLongClickListener(mOnLongClick);
         onTilePostCreate();
+        mVisible = true;
     }
 
     public void setVisibility(ViewGroup mContainerView, boolean visible) {

@@ -1,9 +1,8 @@
 package org.x2ools.quicksettings;
 
-import org.json.JSONObject;
 import org.x2ools.R;
-import org.x2ools.X2ools;
 import org.x2ools.X2oolsActivity;
+import org.x2ools.X2oolsSharedPreferences;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,8 +33,8 @@ public class QuickSettings {
     private static Object mQuickSettings;
 
     private static WechatScanTile scanTile;
-    private static JSONObject json;
     private static boolean canAddScanTile = false;
+    private static X2oolsSharedPreferences x2ools_prefs;
 
     private static BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -53,7 +52,7 @@ public class QuickSettings {
         if (!lpparam.packageName.equals(PACKAGE_NAME))
             return;
 
-        json = X2ools.getJsonPrefs();
+        x2ools_prefs = new X2oolsSharedPreferences();
 
         Class<?> quickSettingsClass = XposedHelpers.findClass(CLASS_QUICK_SETTINGS, lpparam.classLoader);
         Class<?> phoneStatusBarClass = XposedHelpers.findClass(CLASS_PHONE_STATUSBAR, lpparam.classLoader);
@@ -106,7 +105,7 @@ public class QuickSettings {
             scanTile = new WechatScanTile(mContext, mX2oolContext, mStatusBar, mPanelBar);
             scanTile.setupQuickSettingsTile(mContainerView, inflater, mQuickSettings);
 
-            scanTile.setVisibility(mContainerView, json.getBoolean(X2oolsActivity.KEY_WECHAT_SCAN));
+            scanTile.setVisibility(mContainerView, x2ools_prefs.getBoolean(X2oolsActivity.KEY_WECHAT_SCAN, false));
         }
     };
 

@@ -1,10 +1,7 @@
 package org.x2ools.wechat;
 
-import java.net.URLDecoder;
-
-import org.json.JSONObject;
-import org.x2ools.X2ools;
 import org.x2ools.X2oolsActivity;
+import org.x2ools.X2oolsSharedPreferences;
 
 import android.graphics.Typeface;
 import android.text.TextUtils;
@@ -24,7 +21,7 @@ public class WeChat {
     public static final String CLASS_PREFERENCE = "com.tencent.mm.ui.base.preference.Preference";
     public static final String CLASS_PREFERENCE_TITLE_CATEGORY = "com.tencent.mm.ui.base.preference.PreferenceTitleCategory";
 
-    private static JSONObject json = null;
+    private static X2oolsSharedPreferences x2ools_prefs;
 
     public static void initZygote(StartupParam startupParam) throws Throwable {
         // TODO Auto-generated method stub
@@ -44,7 +41,7 @@ public class WeChat {
         if (!lpparam.packageName.equals(PACKAGE_NAME))
             return;
 
-        json = X2ools.getJsonPrefs();
+        x2ools_prefs = new X2oolsSharedPreferences();
 
         Class<?> mmTextViewClz = XposedHelpers.findClass(CLASS_MM_TEXTVIEW, lpparam.classLoader);
         Class<?> findMoreFriendsUI = XposedHelpers.findClass(CLASS_FIND_MORE_FRIENDS_UI, lpparam.classLoader);
@@ -55,11 +52,9 @@ public class WeChat {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 TextView tv = (TextView) param.thisObject;
-                if (json != null) {
-                    String font = URLDecoder.decode((String) json.get(X2oolsActivity.KEY_WECHAT_CHAT_FONT), "UTF-8");
-                    if (!TextUtils.isEmpty(font))
-                        tv.setTypeface(Typeface.createFromFile(font));
-                }
+                String font = x2ools_prefs.getString(X2oolsActivity.KEY_WECHAT_CHAT_FONT, "");
+                if (!TextUtils.isEmpty(font))
+                    tv.setTypeface(Typeface.createFromFile(font));
             }
         });
 
@@ -69,10 +64,8 @@ public class WeChat {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 Object cFy = XposedHelpers.getObjectField(param.thisObject, "cFy");
-                if (json != null) {
-                    boolean canRemove = json.getBoolean(X2oolsActivity.KEY_WECHAT_REMOVE_GAME);
-                    XposedHelpers.callMethod(cFy, "S", "more_tab_game_recommend", canRemove);
-                }
+                boolean canRemove = x2ools_prefs.getBoolean(X2oolsActivity.KEY_WECHAT_REMOVE_GAME, false);
+                XposedHelpers.callMethod(cFy, "S", "more_tab_game_recommend", canRemove);
             }
         });
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ImageView
+        android:id="@+id/layoutSmall" 
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_context_settings"
+        />
+<LinearLayout
+        android:id="@+id/layoutBig" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pop_bg"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/currentPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="packageName" />
+
+        <Button
+            android:id="@+id/gotoSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gotoSettings" />
+
+        
+        <EditText
+          android:id="@+id/editText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          />
+    </LinearLayout>
+
+</FrameLayout>

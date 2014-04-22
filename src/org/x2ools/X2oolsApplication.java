@@ -1,10 +1,11 @@
 package org.x2ools;
 
 import android.app.Application;
-import android.util.Log;
+import android.content.Intent;
 
 import com.juuda.droidmock.mock.Mocks;
 
+import org.x2ools.contextsettings.ContextSettingsService;
 import org.x2ools.mocks.ViewDebugMocker;
 
 public class X2oolsApplication extends Application{
@@ -13,9 +14,8 @@ public class X2oolsApplication extends Application{
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "hahah");
         Mocks.sModuleMap.put("viewdebug", ViewDebugMocker.class);
-
+        startService(new Intent(this, ContextSettingsService.class));
         super.onCreate();
     }
     

@@ -15,116 +15,114 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 public abstract class AQuickSettingsTile implements OnClickListener {
-	protected static final String PACKAGE_NAME = "com.android.systemui";
+    protected static final String PACKAGE_NAME = "com.android.systemui";
 
-	protected Context mContext;
-	protected Context mGbContext;
-	protected FrameLayout mTile;
-	protected OnClickListener mOnClick;
-	protected OnLongClickListener mOnLongClick;
-	protected Resources mResources;
-	protected Resources mGbResources;
-	protected Object mStatusBar;
-	protected Object mPanelBar;
-	protected Object mQuickSettings;
-	protected ViewGroup mContainer;
+    protected Context mContext;
+    protected Context mGbContext;
+    protected FrameLayout mTile;
+    protected OnClickListener mOnClick;
+    protected OnLongClickListener mOnLongClick;
+    protected Resources mResources;
+    protected Resources mGbResources;
+    protected Object mStatusBar;
+    protected Object mPanelBar;
+    protected Object mQuickSettings;
+    protected ViewGroup mContainer;
+    protected boolean mVisible;
 
-	public AQuickSettingsTile(Context context, Context gbContext,
-			Object statusBar, Object panelBar) {
-		mContext = context;
-		mGbContext = gbContext;
-		mResources = mContext.getResources();
-		mGbResources = mGbContext.getResources();
-		mStatusBar = statusBar;
-		mPanelBar = panelBar;
-	}
+    public AQuickSettingsTile(Context context, Context gbContext, Object statusBar, Object panelBar) {
+        mContext = context;
+        mGbContext = gbContext;
+        mResources = mContext.getResources();
+        mGbResources = mGbContext.getResources();
+        mStatusBar = statusBar;
+        mPanelBar = panelBar;
+    }
 
-	public void setupQuickSettingsTile(ViewGroup viewGroup,
-			LayoutInflater inflater, Object quickSettings) {
-		mContainer = viewGroup;
-		mQuickSettings = quickSettings;
-		int layoutId = mResources.getIdentifier("quick_settings_tile",
-				"layout", PACKAGE_NAME);
-		mTile = (FrameLayout) inflater.inflate(layoutId, viewGroup, false);
-		onTileCreate();
-		viewGroup.addView(mTile);
-		updateResources();
-		mTile.setOnClickListener(this);
-		mTile.setOnLongClickListener(mOnLongClick);
-		onTilePostCreate();
-	}
-	
-	public void setVisibility(ViewGroup mContainerView, boolean visible) {
-		Resources res = mContainerView.getResources();
-		int orientation = res.getConfiguration().orientation;
+    public void setupQuickSettingsTile(ViewGroup viewGroup, LayoutInflater inflater, Object quickSettings) {
+        mContainer = viewGroup;
+        mQuickSettings = quickSettings;
+        int layoutId = mResources.getIdentifier("quick_settings_tile", "layout", PACKAGE_NAME);
+        mTile = (FrameLayout) inflater.inflate(layoutId, viewGroup, false);
+        onTileCreate();
+        viewGroup.addView(mTile);
+        updateResources();
+        mTile.setOnClickListener(this);
+        mTile.setOnLongClickListener(mOnLongClick);
+        onTilePostCreate();
+        mVisible = true;
+    }
 
-		int mNumColumns = XposedHelpers.getIntField(mContainerView,
-				"mNumColumns");
+    public void setVisibility(ViewGroup mContainerView, boolean visible) {
+        if (mVisible == visible)
+            return;
+        mVisible = visible;
+        Resources res = mContainerView.getResources();
+        int orientation = res.getConfiguration().orientation;
 
-		TileLayout tl = new TileLayout(mContainerView.getContext(),
-				mNumColumns, orientation, TileLayout.LabelStyle.ALLCAPS);
-		
-		if(visible) {
-			mContainerView.addView(mTile);
-		} else {
-			mContainerView.removeView(mTile);
-		}
-		updateLayout(tl);
-		((FrameLayout) mContainerView).requestLayout();
-	}
+        int mNumColumns = XposedHelpers.getIntField(mContainerView, "mNumColumns");
 
-	public void updateLayout(TileLayout tileLayout) {
-		if (mTile != null) {
-			onLayoutUpdated(tileLayout);
-		}
-	}
+        TileLayout tl = new TileLayout(mContainerView.getContext(), mNumColumns, orientation,
+                TileLayout.LabelStyle.ALLCAPS);
 
-	protected abstract void onTileCreate();
+        if (visible) {
+            mContainerView.addView(mTile);
+        } else {
+            mContainerView.removeView(mTile);
+        }
+        updateLayout(tl);
+        ((FrameLayout) mContainerView).requestLayout();
+    }
 
-	protected void onTilePostCreate() {
-	};
+    public void updateLayout(TileLayout tileLayout) {
+        if (mTile != null) {
+            onLayoutUpdated(tileLayout);
+        }
+    }
 
-	protected abstract void onLayoutUpdated(TileLayout tileLayout);
+    protected abstract void onTileCreate();
 
-	protected abstract void updateTile();
+    protected void onTilePostCreate() {
+    };
 
-	public void updateResources() {
-		if (mTile != null) {
-			updateTile();
-		}
-	}
+    protected abstract void onLayoutUpdated(TileLayout tileLayout);
 
-	@Override
-	public void onClick(View v) {
-		if (mOnClick != null) {
-			mOnClick.onClick(v);
-		}
-	}
+    protected abstract void updateTile();
 
-	protected void startActivity(String action) {
-		Intent intent = new Intent(action);
-		startActivity(intent);
-	}
+    public void updateResources() {
+        if (mTile != null) {
+            updateTile();
+        }
+    }
 
-	protected void startActivity(Intent intent) {
-		try {
-			XposedHelpers.callMethod(mQuickSettings, "startSettingsActivity",
-					intent);
-		} catch (Throwable t) {
-			// fallback in case of troubles
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			mContext.startActivity(intent);
-			collapsePanels();
-		}
-	}
+    @Override
+    public void onClick(View v) {
+        if (mOnClick != null) {
+            mOnClick.onClick(v);
+        }
+    }
 
-	protected void collapsePanels() {
-		try {
-			XposedHelpers.callMethod(mStatusBar, "animateCollapsePanels");
-		} catch (Throwable t) {
-			XposedBridge.log("Error calling animateCollapsePanels: "
-					+ t.getMessage());
-		}
-	}
+    protected void startActivity(String action) {
+        Intent intent = new Intent(action);
+        startActivity(intent);
+    }
+
+    protected void startActivity(Intent intent) {
+        try {
+            XposedHelpers.callMethod(mQuickSettings, "startSettingsActivity", intent);
+        } catch (Throwable t) {
+            // fallback in case of troubles
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mContext.startActivity(intent);
+            collapsePanels();
+        }
+    }
+
+    protected void collapsePanels() {
+        try {
+            XposedHelpers.callMethod(mStatusBar, "animateCollapsePanels");
+        } catch (Throwable t) {
+            XposedBridge.log("Error calling animateCollapsePanels: " + t.getMessage());
+        }
+    }
 }

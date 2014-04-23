@@ -44,7 +44,10 @@ Roadmap
 
 ###XPosed优化
 1. 可以不重启直接用(考虑adb shell killall, 用另一个条调试用apk等方法)
+<<<<<<< HEAD
 
 ###SuperSearch
 1.T9 search anything
+=======
 2.  
+>>>>>>> fa4cc6d6becf3e5a114074afc6e492ecbc7cbf1a

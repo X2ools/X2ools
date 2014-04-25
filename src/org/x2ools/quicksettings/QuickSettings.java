@@ -1,9 +1,5 @@
 package org.x2ools.quicksettings;
 
-import org.x2ools.R;
-import org.x2ools.X2oolsActivity;
-import org.x2ools.X2oolsSharedPreferences;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +9,15 @@ import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+import org.x2ools.R;
+import org.x2ools.X2oolsActivity;
+import org.x2ools.X2oolsSharedPreferences;
 
 public class QuickSettings {
 
@@ -65,7 +66,7 @@ public class QuickSettings {
         XposedHelpers.findAndHookMethod(quickSettingsClass, "addSystemTiles", ViewGroup.class, LayoutInflater.class,
                 quickSettingsAddSystemTilesHook);
     }
-
+    
     private static XC_MethodHook quickSettingsConstructHook = new XC_MethodHook() {
 
         @Override

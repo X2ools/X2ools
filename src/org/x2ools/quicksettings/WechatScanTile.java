@@ -1,11 +1,11 @@
 package org.x2ools.quicksettings;
 
-import org.x2ools.R;
-import org.x2ools.wechat.WeChat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+
+import org.x2ools.R;
+import org.x2ools.wechat.WeChat;
 
 public class WechatScanTile extends BasicTile {
 

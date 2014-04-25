@@ -1,7 +1,5 @@
 package org.x2ools.quicksettings;
 
-import org.x2ools.quicksettings.QuickSettings.TileLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -11,8 +9,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+
+import org.x2ools.quicksettings.QuickSettings.TileLayout;
 
 public abstract class AQuickSettingsTile implements OnClickListener {
     protected static final String PACKAGE_NAME = "com.android.systemui";

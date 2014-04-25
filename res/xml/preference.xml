@@ -39,27 +39,40 @@
             android:summary="@string/wechat_scan_summary"
             android:title="@string/wechat_scan" />
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:key="category_context_settings"
+        android:title="@string/context_settings" >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_context_settings"
+            android:summary="@string/context_settings_summary"
+            android:title="@string/context_settings_title" />
+    </PreferenceCategory>
+    
     <PreferenceCategory
         android:key="category_weibo"
         android:title="微博" >
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enable_wechat"
             android:summary="去除广告等"
             android:title="开启微博" />
     </PreferenceCategory>
+    
     <PreferenceCategory
         android:key="category_netmgr"
         android:title="流量监控" >
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enable_netmgr"
             android:title="开启流量监控" />
     </PreferenceCategory>
+    
     <PreferenceCategory
         android:key="category_superdebug"
         android:title="超级调试" >
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enable_superdebug"
             android:title="开启超级调试" />

@@ -1,16 +1,17 @@
 package org.x2ools.wechat;
 
-import org.x2ools.X2oolsActivity;
-import org.x2ools.X2oolsSharedPreferences;
-
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.widget.TextView;
+
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+import org.x2ools.X2oolsActivity;
+import org.x2ools.X2oolsSharedPreferences;
 
 public class WeChat {
     public static final String PACKAGE_NAME = "com.tencent.mm";

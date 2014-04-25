@@ -1,8 +1,5 @@
 package org.x2ools.quicksettings;
 
-import org.x2ools.R;
-import org.x2ools.quicksettings.QuickSettings.TileLayout;
-
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.x2ools.R;
+import org.x2ools.quicksettings.QuickSettings.TileLayout;
 
 // Abstract Basic Tile definition
 // Tile layout should consist of 2 View elements: ImageView and TextView

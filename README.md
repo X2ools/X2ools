@@ -36,7 +36,8 @@ Roadmap
 1. 当前活动进程的相关操作
     1. 显示当前APP信息
     2. 强行关闭当前应用(foreceStopPackage)
-    3. 跳转到
+    3. 跳转到应用设置
+    4. 输出当前进程的log
 
 ###全局手势操作 
 1. 定义常见手势
@@ -48,4 +49,6 @@ Roadmap
 ###T9Search Anything
 1. 联系人
 2. 应用
-20 界面中所有的TextView
+3. 界面中所有的TextView
+4. JNI
+5. use DexClassLoader

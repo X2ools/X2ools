@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.reflect.Method;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-
 import com.juuda.droidmock.mock.MockUtils;
 import com.juuda.droidmock.mock.Mocker;
 
 import org.x2ools.superdebug.SuperDebug;
+
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewDebugMocker extends Mocker{
     public static final String TAG = "ViewDebugMocker";

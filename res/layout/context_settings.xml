@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" >
+<org.x2ools.contextsettings.ContextSettingsView
+    android:id="@+id/contextSettingsView" xmlns:android="http://schemas.android.com/apk/res/android" >
     <ImageView
         android:id="@+id/layoutSmall" 
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_context_settings"
         />
-<LinearLayout
+    <LinearLayout
         android:id="@+id/layoutBig" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/pop_bg"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:padding="20dp" >
 
         <TextView
             android:id="@+id/currentPackage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="packageName" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/gotoSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="gotoSettings" />
-
+            android:text="@string/settings" />
         
-        <EditText
-          android:id="@+id/editText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          />
+        <Button
+            android:id="@+id/x2ools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_x2ools" />
     </LinearLayout>
 
-</FrameLayout>
+</org.x2ools.contextsettings.ContextSettingsView>

@@ -1,5 +1,12 @@
 package org.x2ools;
 
+import android.content.SharedPreferences;
+import android.os.Environment;
+import android.text.TextUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,13 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Set;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.SharedPreferences;
-import android.os.Environment;
-import android.text.TextUtils;
 
 /**
  * This class is basically the same as SharedPreferencesImpl from AOSP. You can

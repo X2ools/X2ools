@@ -4,14 +4,14 @@ package org.x2ools.superdebug;
 import android.util.Log;
 import android.view.View;
 
-import java.lang.ref.WeakReference;
-
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+import java.lang.ref.WeakReference;
 public class SuperDebug {
     public static final String PACKAGE_NAME = "com.android.systemui";
     public static final String CLASS_StatusBarWindowView= "com.android.systemui.statusbar.phone.StatusBarWindowView";

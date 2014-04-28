@@ -25,8 +25,6 @@ public class WeChat {
     private static X2oolsSharedPreferences x2ools_prefs;
 
     public static void initZygote(StartupParam startupParam) throws Throwable {
-        // TODO Auto-generated method stub
-
     }
 
     public static void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {

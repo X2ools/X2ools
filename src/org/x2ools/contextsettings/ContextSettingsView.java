@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -18,15 +19,22 @@ import android.widget.TextView;
 
 import org.x2ools.R;
 
+import com.juuda.droidmock.adb.SettingsMocker;
+
 import java.lang.ref.WeakReference;
 
 public class ContextSettingsView extends FrameLayout{
+	public static final int MESSAGE_UPDATE_VIEW = 0;
+	public static final int MESSAGE_SHOW_BIG = 1;
+	public static final int MESSAGE_SHOW_SMALL = 2;
+
     private static final String TAG = "ContextSettingsView";
     private TextView mTextCurrentPackage;
     private Button mButtonSettings;
     private View mX2ools;
     private View mLayoutSmall;
     private View mLayoutBig;
+    private View mToggleAdb;
     private Context mContext;
     private CallBack mCallBack;
     public static final int DELAY_MILLS = 1000;
@@ -47,6 +55,7 @@ public class ContextSettingsView extends FrameLayout{
         mLayoutSmall = findViewById(R.id.layoutSmall);
         mLayoutBig = findViewById(R.id.layoutBig);
         mX2ools = findViewById(R.id.x2ools);
+        mToggleAdb = findViewById(R.id.toggleAdb);
         super.onFinishInflate();
     }
 
@@ -87,14 +96,10 @@ public class ContextSettingsView extends FrameLayout{
                 else {
                     Log.d(TAG, "not Moved");
                     if(mLayoutSmall.getVisibility() == View.VISIBLE) {
-                        mLayoutSmall.setVisibility(View.GONE);
-                        mLayoutBig.setVisibility(View.VISIBLE);
-                        mCallBack.onModeChanged(true);
+                    	showBig();
                     }
                     else {
-                        mLayoutSmall.setVisibility(View.VISIBLE);
-                        mLayoutBig.setVisibility(View.GONE);
-                        mCallBack.onModeChanged(false);
+                    	showSmall();
                     }
                 }
                 break;
@@ -103,36 +108,63 @@ public class ContextSettingsView extends FrameLayout{
         return true;
     }
     
+    private void showSmall() {
+        if(mLayoutSmall.getVisibility() == View.GONE) {
+            mLayoutSmall.setVisibility(View.VISIBLE);
+            mLayoutBig.setVisibility(View.GONE);
+            mCallBack.onModeChanged(true);
+        }
+    }
+    
+    private void showBig() {
+        if(mLayoutSmall.getVisibility() == View.VISIBLE) {
+            mLayoutSmall.setVisibility(View.GONE);
+            mLayoutBig.setVisibility(View.VISIBLE);
+            mCallBack.onModeChanged(true);
+        }
+    }
+    
     public void updateView() {
-        final String currentPackage = getRunningPackage().toString();
-        final String applicationName = getApplicationName(currentPackage);
+     
+        mButtonSettings.setOnClickListener(mClickListener);
+        
+        mX2ools.setOnClickListener(mClickListener);
+        mToggleAdb.setOnClickListener(mClickListener);
+        sHandler.removeMessages(0);
+        sHandler.sendEmptyMessageDelayed(0, DELAY_MILLS);
+        
+    }
+    
+    
+    OnClickListener mClickListener = new OnClickListener() {
 
-        mTextCurrentPackage.setText(currentPackage + "\n" + applicationName);        
-        mButtonSettings.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
+        	showSmall();
+        	if(v == mToggleAdb) {
+        		new Thread() {
+        			public void run() {
+                		new SettingsMocker(mContext, null).toggleAdb();
+        			}
+        		}.start();
+        	}
+        	else if(v == mX2ools) {
+                Intent i = mPm.getLaunchIntentForPackage("org.x2ools");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(i);
+        	}
+        	else if(v == mButtonSettings) {
+                final String currentPackage = getRunningPackage().toString();
+                final String applicationName = getApplicationName(currentPackage);
+                mTextCurrentPackage.setText(currentPackage + "\n" + applicationName);   
                 Intent i = new Intent();
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
                 i.setData(Uri.parse("package:"+ currentPackage));
                 mContext.startActivity(i);
-            }
-        });
-        
-        mX2ools.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = mPm.getLaunchIntentForPackage("org.x2ools");
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
-            }
-        });
-        
-        sHandler.removeMessages(0);
-        sHandler.sendEmptyMessageDelayed(0, DELAY_MILLS);
-    }
+        	}
+        }
+    };
     
     private CharSequence getRunningPackage() {
         return  mAm.getRunningTasks(1).get(0).topActivity.getPackageName();
@@ -158,7 +190,7 @@ public class ContextSettingsView extends FrameLayout{
     static UpdateHandler sHandler = new UpdateHandler();
 
     static class UpdateHandler extends Handler {
-        private WeakReference<ContextSettingsView> mView;
+		private WeakReference<ContextSettingsView> mView;
         
         public void setView(ContextSettingsView view) {
             mView = new WeakReference<ContextSettingsView>(view);
@@ -166,7 +198,18 @@ public class ContextSettingsView extends FrameLayout{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mView.get().updateView();
+            switch(msg.what) {
+            case MESSAGE_UPDATE_VIEW:
+            	mView.get().updateView();
+            	break;
+            case MESSAGE_SHOW_BIG:
+            	mView.get().showBig();
+            	break;
+            case MESSAGE_SHOW_SMALL:
+            	mView.get().showSmall();
+            	break;
+            }
+            
         }
     } 
     

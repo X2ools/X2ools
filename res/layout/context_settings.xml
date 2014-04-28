@@ -32,6 +32,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/open_x2ools" />
+        <Button
+            android:id="@+id/toggleAdb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toggleAdb" />
     </LinearLayout>
 
 </org.x2ools.contextsettings.ContextSettingsView>

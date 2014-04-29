@@ -1,8 +1,8 @@
+
 package org.x2ools;
 
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +19,8 @@ import java.util.Set;
 /**
  * This class is basically the same as SharedPreferencesImpl from AOSP. You can
  * read and write by any app, but maybe slowly and without listeners support.
+ * Do not write x2ools preference values in another app, create your own key if
+ * you want use X2oolsSharedPreferences.
  */
 public class X2oolsSharedPreferences implements SharedPreferences {
 
@@ -53,22 +54,24 @@ public class X2oolsSharedPreferences implements SharedPreferences {
         }
 
         try {
-            File jsonFile = new File(Environment.getExternalStorageDirectory() + "/X2ools/prefs.json");
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(jsonFile));
-            BufferedReader bufferedReader = new BufferedReader(isr);
-            String receiveString = "";
-            StringBuilder stringBuilder = new StringBuilder();
+            File jsonFile = new File(Environment.getExternalStorageDirectory()
+                    + "/X2ools/prefs.json");
+            if (jsonFile.exists()) {
+                InputStreamReader isr = new InputStreamReader(new FileInputStream(jsonFile));
+                BufferedReader bufferedReader = new BufferedReader(isr);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
 
-            while ((receiveString = bufferedReader.readLine()) != null) {
-                stringBuilder.append(receiveString);
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(receiveString);
+                }
+
+                json = new JSONObject(stringBuilder.toString());
+                bufferedReader.close();
+            } else {
+                json = new JSONObject();
             }
 
-            if (!TextUtils.isEmpty(stringBuilder))
-                json = new JSONObject(stringBuilder.toString());
-
-            bufferedReader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

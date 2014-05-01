@@ -1,16 +1,17 @@
 package org.x2ools;
 
-import android.content.res.XResources;
+import org.x2ools.quicksettings.QuickSettings;
+import org.x2ools.superdebug.SuperDebug;
+import org.x2ools.system.XActivity;
+import org.x2ools.system.XSystemUI;
+import org.x2ools.wechat.WeChat;
 
+import android.content.res.XResources;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
-
-import org.x2ools.quicksettings.QuickSettings;
-import org.x2ools.superdebug.SuperDebug;
-import org.x2ools.wechat.WeChat;
 
 public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources, IXposedHookLoadPackage {
 
@@ -20,6 +21,7 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
     public void initZygote(StartupParam startupParam) throws Throwable {
         WeChat.initZygote(startupParam);
         SuperDebug.initZygote(startupParam);
+        XActivity.initZygote(startupParam);
     }
 
     @Override
@@ -34,8 +36,9 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         WeChat.handleLoadPackage(lpparam);
-        SuperDebug.handleLoadPackage(lpparam);
+        //SuperDebug.handleLoadPackage(lpparam);
         QuickSettings.handleLoadPackage(lpparam);
+        XSystemUI.handleLoadPackage(lpparam);
     }
 
 }

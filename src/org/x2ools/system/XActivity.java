@@ -1,26 +1,21 @@
 package org.x2ools.system;
 
-import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.x2ools.R;
 import org.x2ools.Utils;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.XModuleResources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -59,6 +54,18 @@ public class XActivity {
                     }
                 }
             }
+
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                if (Utils.isKeyguardLocked(context)) {
+                    XSystemUI.sStatusBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
+                    XSystemUI.sNavigationBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
+                    XSystemUI.sStatusBarView.setBackground(new BarBackgroundDrawable(XSystemUI.sStatusBarView
+                            .getContext(), mResources, R.drawable.status_background));
+                    XSystemUI.sNavigationBarView.setBackground(new BarBackgroundDrawable(XSystemUI.sNavigationBarView
+                            .getContext(), mResources, R.drawable.nav_background));
+
+                }
+            }
         }
     };
 
@@ -67,7 +74,7 @@ public class XActivity {
         mResources = XModuleResources.createInstance(startupParam.modulePath, null);
 
         Class<?> ActivityClass = XposedHelpers.findClass("android.app.Activity", null);
-        findAndHookMethod(ActivityClass, "performResume", new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(ActivityClass, "performResume", new XC_MethodHook() {
 
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -116,18 +123,10 @@ public class XActivity {
 
                 }
 
-                // ActionBar actionBar = activity.getActionBar();
-                if (hasActionBarLikeView/*
-                                         * actionBar != null &&
-                                         * actionBar.isShowing()
-                                         */&& !shouldEnableDrawable) {
-                    // FrameLayout container = (FrameLayout)
-                    // XposedHelpers.getObjectField(actionBar,
-                    // "mContainerView");
+                if (hasActionBarLikeView && !shouldEnableDrawable) {
                     if (container != null) {
-
                         Drawable backgroundDrawable = (Drawable) XposedHelpers.getObjectField(container, "mBackground");
-                        if(backgroundDrawable != null) {
+                        if (backgroundDrawable != null) {
                             tintColor = Utils.getMainColorFromActionBarDrawable(backgroundDrawable);
                         } else {
                             Bitmap backgroundBitmap = Utils.convertViewToBitmap(container);

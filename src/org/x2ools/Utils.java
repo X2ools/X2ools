@@ -2,6 +2,9 @@ package org.x2ools;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -85,5 +88,18 @@ public class Utils {
         view.destroyDrawingCache();
 
         return bitmap;
+    }
+    
+    @SuppressLint("NewApi")
+    public static boolean isKeyguardLocked(Context context) {
+        KeyguardManager kgm = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        boolean keyguardLocked;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            keyguardLocked = kgm.isKeyguardLocked();
+        } else {
+            keyguardLocked = kgm.inKeyguardRestrictedInputMode();
+        }
+        return keyguardLocked;
     }
 }

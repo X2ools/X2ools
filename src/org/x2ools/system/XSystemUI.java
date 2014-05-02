@@ -4,6 +4,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.View;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
@@ -58,13 +59,10 @@ public class XSystemUI {
                     Context context = (Context) param.args[0];
                     IntentFilter iF = new IntentFilter();
                     iF.addAction(XActivity.ACTION_CHANGE_STATUS_BAR);
+                    iF.addAction(XActivity.ACTION_CHANGE_NAVIGATION_BAR);
+                    iF.addAction(Intent.ACTION_SCREEN_ON);
                     iF.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
                     context.registerReceiver(XActivity.mReceiver, iF);
-                    
-                    IntentFilter iF2 = new IntentFilter();
-                    iF2.addAction(XActivity.ACTION_CHANGE_NAVIGATION_BAR);
-                    iF2.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-                    context.registerReceiver(XActivity.mReceiver, iF2);
                 }
             });
         } catch (ClassNotFoundError e) {

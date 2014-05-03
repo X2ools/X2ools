@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -39,7 +39,6 @@
             android:summary="@string/wechat_scan_summary"
             android:title="@string/wechat_scan" />
     </PreferenceCategory>
-    
     <PreferenceCategory
         android:key="category_context_settings"
         android:title="@string/context_settings" >
@@ -49,33 +48,14 @@
             android:summary="@string/context_settings_summary"
             android:title="@string/context_settings_title" />
     </PreferenceCategory>
-    
     <PreferenceCategory
-        android:key="category_weibo"
-        android:title="微博" >
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enable_wechat"
-            android:summary="去除广告等"
-            android:title="开启微博" />
-    </PreferenceCategory>
-    
-    <PreferenceCategory
-        android:key="category_netmgr"
-        android:title="流量监控" >
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enable_netmgr"
-            android:title="开启流量监控" />
-    </PreferenceCategory>
-    
-    <PreferenceCategory
-        android:key="category_superdebug"
-        android:title="超级调试" >
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enable_superdebug"
-            android:title="开启超级调试" />
+        android:key="category_system"
+        android:title="@string/system" >
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:defaultValue="-1"
+            android:key="status_color"
+            android:summary="@string/status_color_summary"
+            android:title="@string/status_color_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

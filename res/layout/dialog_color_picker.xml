@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:x2ools="http://schemas.android.com/apk/res/org.x2ools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" >
+
+    <net.margaritov.preference.colorpicker.ColorPickerView
+        android:id="@+id/color_picker_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layerType="software"
+        android:tag="portrait" />
+
+    <LinearLayout
+        android:id="@+id/text_hex_wrapper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp" >
+
+        <EditText
+            android:id="@+id/hex_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="输入颜色值（如FFFFFF）"
+            android:imeOptions="actionDone"
+            android:inputType="textCapCharacters"
+            android:maxLength="7"
+            android:singleLine="true" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal" >
+
+        <net.margaritov.preference.colorpicker.ColorPickerPanelView
+            android:id="@+id/old_color_panel"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            x2ools:text="默认" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPanelView
+            android:id="@+id/auto_color_panel"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            x2ools:text="自动" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPanelView
+            android:id="@+id/new_color_panel"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            x2ools:text="设置" />
+    </LinearLayout>
+
+</LinearLayout>

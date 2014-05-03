@@ -1,23 +1,28 @@
+
 package org.x2ools;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import org.x2ools.contextsettings.ContextSettingsService;
+import org.x2ools.system.XActivity;
 
 public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     public static final String KEY_WECHAT_REMOVE_GAME = "wechat_remove_game";
     public static final String KEY_WECHAT_CHAT_FONT = "wechat_chat_font";
     public static final String KEY_WECHAT_SCAN = "wechat_scan";
-    
+
     public static final String KEY_CONTEXT_SETTINGS = "enable_context_settings";
+
+    public static final String KEY_STATUS_COLOR = "status_color";
 
     public static final String ACTION_WECHAT_SCAN_CHANGED = "x2ools.action.wechat.scan.changed";
 
@@ -56,6 +61,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         editor.putBoolean(KEY_WECHAT_REMOVE_GAME, prefs.getBoolean(KEY_WECHAT_REMOVE_GAME, false));
         editor.putBoolean(KEY_WECHAT_SCAN, prefs.getBoolean(KEY_WECHAT_SCAN, false));
         editor.putBoolean(KEY_CONTEXT_SETTINGS, prefs.getBoolean(KEY_CONTEXT_SETTINGS, true));
+        editor.putInt(KEY_STATUS_COLOR, prefs.getInt(KEY_STATUS_COLOR, Color.TRANSPARENT));
         editor.commit();
     }
 
@@ -66,14 +72,26 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             intent.putExtra(KEY_WECHAT_SCAN, sharedPreferences.getBoolean(KEY_WECHAT_SCAN, false));
             sendBroadcast(intent);
         }
-        else if(key.equals(KEY_CONTEXT_SETTINGS)) {
+        else if (key.equals(KEY_CONTEXT_SETTINGS)) {
             boolean enable = sharedPreferences.getBoolean(KEY_CONTEXT_SETTINGS, true);
             Intent intent = new Intent(ContextSettingsService.ACTION_CONTEXT_SETTINGS);
             intent.putExtra(ContextSettingsService.KEY_ENABLE, enable);
             sendBroadcast(intent);
             Log.d(TAG, "KEY_CONTEXT_SETTINGS changed to  " + enable);
         }
-        
+        else if (key.equals(KEY_STATUS_COLOR)) {
+            int color = sharedPreferences.getInt(KEY_STATUS_COLOR, Color.TRANSPARENT);
+            if(color == Color.TRANSPARENT) {
+                color = getResources().getColor(R.color.default_dark_actionbar);
+            }
+            Intent statusbarIntent = new Intent(XActivity.ACTION_CHANGE_STATUS_BAR);
+            statusbarIntent.putExtra("statusBarColor", color);
+            sendBroadcast(statusbarIntent);
+            Intent navbarIntent = new Intent(XActivity.ACTION_CHANGE_NAVIGATION_BAR);
+            navbarIntent.putExtra("navBarColor", color);
+            sendBroadcast(navbarIntent);
+        }
+
         updateX2oolsPrefs();
     }
 

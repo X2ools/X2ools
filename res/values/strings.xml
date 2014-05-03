@@ -14,6 +14,11 @@
     <string name="context_settings_summary">现实快捷设置,当前应用等信息</string>
     <string name="open_x2ools">打开X2ools</string>
     <string name="toggleAdb">打开/关闭ADB</string>
+    <string name="status_color_title">状态栏颜色</string>
+    <string name="status_color_summary">设置状态栏和导航栏的颜色</string>
+    <string name="system">系统</string>
+    <string name="press_color_to_apply">点击颜色应用</string>
+    <string name="dialog_color_picker">颜色选择器</string>
     
 
 </resources>

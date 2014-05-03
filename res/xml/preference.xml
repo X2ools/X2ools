@@ -52,7 +52,7 @@
         android:key="category_system"
         android:title="@string/system" >
         <net.margaritov.preference.colorpicker.ColorPickerPreference
-            android:defaultValue="-1"
+            android:defaultValue="0"
             android:key="status_color"
             android:summary="@string/status_color_summary"
             android:title="@string/status_color_title" />

@@ -1,17 +1,16 @@
 package org.x2ools;
 
-import org.x2ools.quicksettings.QuickSettings;
-import org.x2ools.superdebug.SuperDebug;
-import org.x2ools.system.XActivity;
-import org.x2ools.system.XSystemUI;
-import org.x2ools.wechat.WeChat;
-
-import android.content.res.XResources;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+import org.x2ools.quicksettings.QuickSettings;
+import org.x2ools.superdebug.SuperDebug;
+import org.x2ools.system.XActivity;
+import org.x2ools.system.XSystemUI;
+import org.x2ools.wechat.WeChat;
 
 public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources, IXposedHookLoadPackage {
 
@@ -26,11 +25,9 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
 
     @Override
     public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
+        XActivity.handleInitPackageResources(resparam);
         WeChat.handleInitPackageResources(resparam);
         SuperDebug.handleInitPackageResources(resparam);
-        XResources.setSystemWideReplacement("android", "dimen", "status_bar_height", 200);
-
-//        XResources.setSystemWideReplacement("com.android.internal", "dimen", "status_bar_height", 200);
     }
 
     @Override

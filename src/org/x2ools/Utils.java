@@ -28,6 +28,18 @@ public class Utils {
             }
         }
     }
+    
+    public static void findViewsById(View v, int id, List<View> result) {
+        if(v.getId() == id) {
+            result.add(v);
+        }
+        if(v instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup)v;
+            for(int i = 0; i < vg.getChildCount(); i++) {
+                findViewsById(vg.getChildAt(i), id, result);
+            }
+        }
+    }
 
     public static int getMainColorFromActionBarDrawable(Drawable drawable) throws IllegalArgumentException {
         /*

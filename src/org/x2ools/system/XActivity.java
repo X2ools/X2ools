@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.XModuleResources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -16,12 +17,15 @@ import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 
 import org.x2ools.R;
 import org.x2ools.Utils;
 import org.x2ools.X2oolsActivity;
 import org.x2ools.X2oolsSharedPreferences;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,7 @@ public class XActivity {
 
     public static final int KITKAT_TRANSPARENT_COLOR = Color.parseColor("#66000000");
     public static XModuleResources mResources;
+    public static Callback mCallback;
 
     public static BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -120,20 +125,43 @@ public class XActivity {
                         container = findViews.get(0);
                         hasActionBarLikeView = true;
                     } else {
-                        if (activity.getPackageName().equals("com.baidu.tieba")) {
-                            Utils.findViewsByClass(dector, "NavigationBar", findViews);
-                            if (findViews.size() > 0) {
-                                container = findViews.get(0);
-                                hasActionBarLikeView = true;
-                            }
-                        }
+                        XmlResourceParser xrp = mResources.getXml(R.xml.custom_bars);
+                        try {
+                            while (xrp.getEventType() != XmlResourceParser.END_DOCUMENT) {
+                                if (xrp.getEventType() == XmlResourceParser.START_TAG) {
+                                    String tagName = xrp.getName();
+                                    String packageName = xrp.getAttributeValue(null, "package");
+                                    String className = xrp.getAttributeValue(null, "class");
+                                    String idName = xrp.getAttributeValue(null, "id");
 
-                        if (activity.getPackageName().equals("com.twitter.android")) {
-                            Utils.findViewsByClass(dector, "ToolBar", findViews);
-                            if (findViews.size() > 0) {
-                                container = findViews.get(0);
-                                hasActionBarLikeView = true;
+                                    if (tagName.equals("Bar")) {
+                                        if (idName != null && mCallback != null) {
+                                            int id = mCallback.getIdentifier(idName, packageName);
+                                            if (activity.getPackageName().equals(packageName)) {
+                                                Utils.findViewsById(dector, id, findViews);
+                                                if (findViews.size() > 0) {
+                                                    container = findViews.get(0);
+                                                    hasActionBarLikeView = true;
+                                                }
+                                            }
+                                        }
+                                        else if (className != null) {
+                                            if (activity.getPackageName().equals(packageName)) {
+                                                Utils.findViewsByClass(dector, className, findViews);
+                                                if (findViews.size() > 0) {
+                                                    container = findViews.get(0);
+                                                    hasActionBarLikeView = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                xrp.next();
                             }
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
 
                     }
@@ -178,6 +206,21 @@ public class XActivity {
                 activity.sendBroadcast(navBarIntent);
             }
         });
+    }
+
+    public static void handleInitPackageResources(final InitPackageResourcesParam resparam)
+            throws Throwable {
+        mCallback = new Callback() {
+
+            @Override
+            public int getIdentifier(String name, String packageName) {
+                return resparam.res.getIdentifier(name, "id", packageName);
+            }
+        };
+    }
+
+    public interface Callback {
+        public int getIdentifier(String name, String packageName);
     }
 
 }

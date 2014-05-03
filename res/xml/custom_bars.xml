@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custombars>
+
+    <Bar
+        class="ToolBar"
+        package="com.twitter.android" />
+    <Bar
+        class="NavigationBar"
+        package="com.baidu.tieba" />
+    <Bar
+        id="naviBar"
+        package="com.yaya.zone" />
+    <Bar
+        id="main_radio"
+        package="com.sina.weibo" />
+    <Bar
+        class="TabWidget"
+        package="com.eg.android.AlipayGphone" />
+    <Bar
+        id="main_titlebar"
+        package="com.coolapk.market" />
+    <Bar
+        id="base_action_bar"
+        package="com.netease.newsreader.activity" />
+    <Bar
+        class="BottomTabWidget"
+        package="com.tencent.android.qqdownloader" />
+    <Bar
+        id="title"
+        package="cmb.pb" />
+
+</custombars>

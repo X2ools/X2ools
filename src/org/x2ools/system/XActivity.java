@@ -2,8 +2,6 @@
 package org.x2ools.system;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.XModuleResources;
 import android.content.res.XmlResourceParser;
@@ -31,56 +29,9 @@ import java.util.List;
 
 public class XActivity {
 
-    public static final String ACTION_CHANGE_STATUS_BAR = "X2ools.action.change.status.bar";
-    public static final String ACTION_CHANGE_NAVIGATION_BAR = "X2ools.action.change.navigation.bar";
-
     public static final int KITKAT_TRANSPARENT_COLOR = Color.parseColor("#66000000");
     public static XModuleResources mResources;
     public static Callback mCallback;
-
-    public static BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION_CHANGE_STATUS_BAR)) {
-                int color = intent.getIntExtra("statusBarColor", 0);
-                if (color != 0 && XSystemUI.sStatusBarView != null) {
-                    XSystemUI.sStatusBarView.setBackgroundColor(color);
-                    if (intent.getBooleanExtra("shouldEnableDrawable", false)) {
-                        XSystemUI.sStatusBarView.setBackground(new BarBackgroundDrawable(
-                                XSystemUI.sStatusBarView
-                                        .getContext(), mResources, R.drawable.status_background));
-                    }
-                }
-            }
-
-            if (intent.getAction().equals(ACTION_CHANGE_NAVIGATION_BAR)) {
-                int color = intent.getIntExtra("navBarColor", 0);
-                if (color != 0 && XSystemUI.sNavigationBarView != null) {
-                    XSystemUI.sNavigationBarView.setBackgroundColor(color);
-                    if (intent.getBooleanExtra("shouldEnableDrawable", false)) {
-                        XSystemUI.sNavigationBarView.setBackground(new BarBackgroundDrawable(
-                                XSystemUI.sNavigationBarView.getContext(), mResources,
-                                R.drawable.nav_background));
-                    }
-                }
-            }
-
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                if (Utils.isKeyguardLocked(context)) {
-                    XSystemUI.sStatusBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
-                    XSystemUI.sNavigationBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
-                    XSystemUI.sStatusBarView.setBackground(new BarBackgroundDrawable(
-                            XSystemUI.sStatusBarView
-                                    .getContext(), mResources, R.drawable.status_background));
-                    XSystemUI.sNavigationBarView.setBackground(new BarBackgroundDrawable(
-                            XSystemUI.sNavigationBarView
-                                    .getContext(), mResources, R.drawable.nav_background));
-
-                }
-            }
-        }
-    };
 
     public static void initZygote(StartupParam startupParam) throws Throwable {
 
@@ -94,9 +45,9 @@ public class XActivity {
                 Activity activity = (Activity) param.thisObject;
 
                 Intent statusBarIntent = new Intent();
-                statusBarIntent.setAction(ACTION_CHANGE_STATUS_BAR);
+                statusBarIntent.setAction(XSystemUI.ACTION_CHANGE_STATUS_BAR);
                 Intent navBarIntent = new Intent();
-                navBarIntent.setAction(ACTION_CHANGE_NAVIGATION_BAR);
+                navBarIntent.setAction(XSystemUI.ACTION_CHANGE_NAVIGATION_BAR);
 
                 X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
                 int tintColor = prefs.getInt(X2oolsActivity.KEY_STATUS_COLOR, Color.TRANSPARENT);

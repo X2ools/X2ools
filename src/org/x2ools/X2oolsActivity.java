@@ -12,7 +12,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import org.x2ools.contextsettings.ContextSettingsService;
-import org.x2ools.system.XActivity;
+import org.x2ools.system.XSystemUI;
 
 public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
@@ -84,10 +84,10 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             if(color == Color.TRANSPARENT) {
                 color = getResources().getColor(R.color.default_dark_actionbar);
             }
-            Intent statusbarIntent = new Intent(XActivity.ACTION_CHANGE_STATUS_BAR);
+            Intent statusbarIntent = new Intent(XSystemUI.ACTION_CHANGE_STATUS_BAR);
             statusbarIntent.putExtra("statusBarColor", color);
             sendBroadcast(statusbarIntent);
-            Intent navbarIntent = new Intent(XActivity.ACTION_CHANGE_NAVIGATION_BAR);
+            Intent navbarIntent = new Intent(XSystemUI.ACTION_CHANGE_NAVIGATION_BAR);
             navbarIntent.putExtra("navBarColor", color);
             sendBroadcast(navbarIntent);
         }

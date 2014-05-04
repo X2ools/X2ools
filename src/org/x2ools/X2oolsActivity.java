@@ -87,9 +87,6 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             Intent statusbarIntent = new Intent(XSystemUI.ACTION_CHANGE_STATUS_BAR);
             statusbarIntent.putExtra("statusBarColor", color);
             sendBroadcast(statusbarIntent);
-            Intent navbarIntent = new Intent(XSystemUI.ACTION_CHANGE_NAVIGATION_BAR);
-            navbarIntent.putExtra("navBarColor", color);
-            sendBroadcast(navbarIntent);
         }
 
         updateX2oolsPrefs();

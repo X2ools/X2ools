@@ -8,6 +8,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import org.x2ools.quicksettings.QuickSettings;
 import org.x2ools.superdebug.SuperDebug;
+import org.x2ools.system.XActionBarContainer;
 import org.x2ools.system.XActivity;
 import org.x2ools.system.XSystemUI;
 import org.x2ools.wechat.WeChat;
@@ -21,6 +22,7 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
         WeChat.initZygote(startupParam);
         SuperDebug.initZygote(startupParam);
         XActivity.initZygote(startupParam);
+        XActionBarContainer.initZygote(startupParam);
     }
 
     @Override

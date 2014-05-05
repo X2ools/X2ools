@@ -7,12 +7,13 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import org.x2ools.contextsettings.ContextSettingsService;
-import org.x2ools.system.XSystemUI;
+import org.x2ools.system.XPhoneStatusBar;
+
+import java.io.File;
 
 public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
@@ -26,7 +27,6 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
 
     public static final String ACTION_WECHAT_SCAN_CHANGED = "x2ools.action.wechat.scan.changed";
 
-    public static final String X2OOL_DIR = Environment.getExternalStorageDirectory() + "/X2ools/";
     public static final String X2OOL_PACKAGE_NAME = X2oolsActivity.class.getPackage().getName();
     private static final String TAG = "X2oolsActivity";
 
@@ -39,7 +39,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
         prefs = getPreferenceScreen().getSharedPreferences();
-        updateX2oolsPrefs();
+        initX2oolsPrefs();
     }
 
     @Override
@@ -64,6 +64,14 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         editor.putInt(KEY_STATUS_COLOR, prefs.getInt(KEY_STATUS_COLOR, Color.TRANSPARENT));
         editor.commit();
     }
+    
+    private void initX2oolsPrefs() {
+        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+        if(isFirstRun || !new File(X2oolsApplication.X2OOLS_PREFS).exists()) {
+            prefs.edit().putBoolean("isFirstRun", false).commit();
+            updateX2oolsPrefs();
+        }
+    }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -84,7 +92,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             if(color == Color.TRANSPARENT) {
                 color = getResources().getColor(R.color.default_dark_actionbar);
             }
-            Intent statusbarIntent = new Intent(XSystemUI.ACTION_CHANGE_STATUS_BAR);
+            Intent statusbarIntent = new Intent(XPhoneStatusBar.ACTION_CHANGE_STATUS_BAR);
             statusbarIntent.putExtra("statusBarColor", color);
             sendBroadcast(statusbarIntent);
         }

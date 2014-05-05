@@ -1,3 +1,4 @@
+
 package org.x2ools;
 
 import de.robv.android.xposed.IXposedHookInitPackageResources;
@@ -10,12 +11,11 @@ import org.x2ools.quicksettings.QuickSettings;
 import org.x2ools.superdebug.SuperDebug;
 import org.x2ools.system.XActionBarContainer;
 import org.x2ools.system.XActivity;
-import org.x2ools.system.XSystemUI;
+import org.x2ools.system.XPhoneStatusBar;
 import org.x2ools.wechat.WeChat;
 
-public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources, IXposedHookLoadPackage {
-
-    public static final String PACKAGE_NAME = X2ools.class.getPackage().getName();
+public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources,
+        IXposedHookLoadPackage {
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -35,9 +35,9 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         WeChat.handleLoadPackage(lpparam);
-        //SuperDebug.handleLoadPackage(lpparam);
+        // SuperDebug.handleLoadPackage(lpparam);
         QuickSettings.handleLoadPackage(lpparam);
-        XSystemUI.handleLoadPackage(lpparam);
+        XPhoneStatusBar.handleLoadPackage(lpparam);
     }
 
 }

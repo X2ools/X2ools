@@ -1,3 +1,4 @@
+
 package org.x2ools.quicksettings;
 
 import android.content.BroadcastReceiver;
@@ -55,18 +56,45 @@ public class QuickSettings {
 
         x2ools_prefs = new X2oolsSharedPreferences();
 
-        Class<?> quickSettingsClass = XposedHelpers.findClass(CLASS_QUICK_SETTINGS, lpparam.classLoader);
-        Class<?> phoneStatusBarClass = XposedHelpers.findClass(CLASS_PHONE_STATUSBAR, lpparam.classLoader);
-        Class<?> panelBarClass = XposedHelpers.findClass(CLASS_PANEL_BAR, lpparam.classLoader);
+        Class<?> quickSettingsClass = null;
+        Class<?> phoneStatusBarClass = null;
+        Class<?> panelBarClass = null;
+        try {
+            quickSettingsClass = XposedHelpers.findClass(CLASS_QUICK_SETTINGS,
+                    lpparam.classLoader);
+            phoneStatusBarClass = XposedHelpers.findClass(CLASS_PHONE_STATUSBAR,
+                    lpparam.classLoader);
+            panelBarClass = XposedHelpers.findClass(CLASS_PANEL_BAR, lpparam.classLoader);
+        } catch (Throwable t) {
+            XposedBridge.log(t);
+        }
 
-        XposedBridge.hookAllConstructors(quickSettingsClass, quickSettingsConstructHook);
-        XposedHelpers.findAndHookMethod(quickSettingsClass, "setBar", panelBarClass, quickSettingsSetBarHook);
-        XposedHelpers.findAndHookMethod(quickSettingsClass, "setService", phoneStatusBarClass,
-                quickSettingsSetServiceHook);
-        XposedHelpers.findAndHookMethod(quickSettingsClass, "addSystemTiles", ViewGroup.class, LayoutInflater.class,
-                quickSettingsAddSystemTilesHook);
+        try {
+            XposedBridge.hookAllConstructors(quickSettingsClass, quickSettingsConstructHook);
+        } catch (Throwable t) {
+            XposedBridge.log(t);
+        }
+        try {
+            XposedHelpers.findAndHookMethod(quickSettingsClass, "setBar", panelBarClass,
+                    quickSettingsSetBarHook);
+        } catch (Throwable t) {
+            XposedBridge.log(t);
+        }
+        try {
+            XposedHelpers.findAndHookMethod(quickSettingsClass, "setService", phoneStatusBarClass,
+                    quickSettingsSetServiceHook);
+        } catch (Throwable t) {
+            XposedBridge.log(t);
+        }
+        try {
+            XposedHelpers.findAndHookMethod(quickSettingsClass, "addSystemTiles", ViewGroup.class,
+                    LayoutInflater.class,
+                    quickSettingsAddSystemTilesHook);
+        } catch (Throwable t) {
+            XposedBridge.log(t);
+        }
     }
-    
+
     private static XC_MethodHook quickSettingsConstructHook = new XC_MethodHook() {
 
         @Override
@@ -75,7 +103,8 @@ public class QuickSettings {
             mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             mX2oolContext = mContext.createPackageContext(X2oolsActivity.X2OOL_PACKAGE_NAME,
                     Context.CONTEXT_IGNORE_SECURITY);
-            mContainerView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject, "mContainerView");
+            mContainerView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject,
+                    "mContainerView");
 
             IntentFilter filter = new IntentFilter();
             filter.addAction(X2oolsActivity.ACTION_WECHAT_SCAN_CHANGED);
@@ -106,7 +135,8 @@ public class QuickSettings {
             scanTile = new WechatScanTile(mContext, mX2oolContext, mStatusBar, mPanelBar);
             scanTile.setupQuickSettingsTile(mContainerView, inflater, mQuickSettings);
 
-            scanTile.setVisibility(mContainerView, x2ools_prefs.getBoolean(X2oolsActivity.KEY_WECHAT_SCAN, false));
+            scanTile.setVisibility(mContainerView,
+                    x2ools_prefs.getBoolean(X2oolsActivity.KEY_WECHAT_SCAN, false));
         }
     };
 
@@ -136,29 +166,33 @@ public class QuickSettings {
             final Resources res = context.getResources();
             textSize = 12;
             try {
-                imageMarginTop = res.getDimensionPixelSize(res.getIdentifier("qs_tile_margin_above_icon", "dimen",
+                imageMarginTop = res.getDimensionPixelSize(res.getIdentifier(
+                        "qs_tile_margin_above_icon", "dimen",
                         PACKAGE_NAME));
-                imageMarginBottom = res.getDimensionPixelSize(res.getIdentifier("qs_tile_margin_below_icon", "dimen",
+                imageMarginBottom = res.getDimensionPixelSize(res.getIdentifier(
+                        "qs_tile_margin_below_icon", "dimen",
                         PACKAGE_NAME));
-                imageSize = res.getDimensionPixelSize(res.getIdentifier("qs_tile_icon_size", "dimen", PACKAGE_NAME));
+                imageSize = res.getDimensionPixelSize(res.getIdentifier("qs_tile_icon_size",
+                        "dimen", PACKAGE_NAME));
             } catch (Resources.NotFoundException rnfe) {
                 final Resources x2oolRes = mX2oolContext.getResources();
                 imageMarginTop = x2oolRes.getDimensionPixelSize(R.dimen.qs_tile_margin_above_icon);
-                imageMarginBottom = x2oolRes.getDimensionPixelSize(R.dimen.qs_tile_margin_below_icon);
+                imageMarginBottom = x2oolRes
+                        .getDimensionPixelSize(R.dimen.qs_tile_margin_below_icon);
                 imageSize = x2oolRes.getDimensionPixelSize(R.dimen.qs_tile_icon_size);
             }
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 switch (numColumns) {
-                case 4:
-                    textSize = 10;
-                    imageMarginTop = Math.round(imageMarginTop * 0.6f);
-                    imageMarginBottom = Math.round(imageMarginBottom * 0.6f);
-                    break;
-                case 5:
-                    textSize = 8;
-                    imageMarginTop = Math.round(imageMarginTop * 0.3f);
-                    imageMarginBottom = Math.round(imageMarginBottom * 0.3f);
-                    break;
+                    case 4:
+                        textSize = 10;
+                        imageMarginTop = Math.round(imageMarginTop * 0.6f);
+                        imageMarginBottom = Math.round(imageMarginBottom * 0.6f);
+                        break;
+                    case 5:
+                        textSize = 8;
+                        imageMarginTop = Math.round(imageMarginTop * 0.3f);
+                        imageMarginBottom = Math.round(imageMarginBottom * 0.3f);
+                        break;
                 }
             }
 

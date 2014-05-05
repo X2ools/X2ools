@@ -2,7 +2,6 @@
 package org.x2ools;
 
 import android.content.SharedPreferences;
-import android.os.Environment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +29,7 @@ public class X2oolsSharedPreferences implements SharedPreferences {
     private JSONObject json;
 
     public X2oolsSharedPreferences() {
-        mFile = new File(Environment.getExternalStorageDirectory(), "X2ools/" + "prefs.json");
+        mFile = new File(X2oolsApplication.X2OOLS_PREFS);
         startLoadFromDisk();
     }
 
@@ -54,10 +53,8 @@ public class X2oolsSharedPreferences implements SharedPreferences {
         }
 
         try {
-            File jsonFile = new File(Environment.getExternalStorageDirectory()
-                    + "/X2ools/prefs.json");
-            if (jsonFile.exists()) {
-                InputStreamReader isr = new InputStreamReader(new FileInputStream(jsonFile));
+            if (mFile.exists()) {
+                InputStreamReader isr = new InputStreamReader(new FileInputStream(mFile));
                 BufferedReader bufferedReader = new BufferedReader(isr);
                 String receiveString = "";
                 StringBuilder stringBuilder = new StringBuilder();

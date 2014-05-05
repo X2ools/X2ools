@@ -12,12 +12,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.XposedHelpers.ClassNotFoundError;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import org.x2ools.R;
@@ -28,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XSystemUI {
+public class XPhoneStatusBar {
     public static final String PACKAGE_NAME = "com.android.systemui";
 
     public static final String ACTION_CHANGE_STATUS_BAR = "X2ools.action.change.status.bar";
@@ -45,13 +42,13 @@ public class XSystemUI {
 
             if (intent.getAction().equals(ACTION_CHANGE_STATUS_BAR)) {
                 int color = intent.getIntExtra("statusBarColor", 0);
-                if (color != 0 && XSystemUI.sStatusBarView != null) {
+                if (color != 0 && XPhoneStatusBar.sStatusBarView != null) {
                     if (color == KITKAT_TRANSPARENT_COLOR) {
                         setStatusBar2Translucent();
                     } else {
-                        XSystemUI.sStatusBarView.setBackgroundColor(color);
-                        if (XSystemUI.sNavigationBarView != null) {
-                            XSystemUI.sNavigationBarView.setBackgroundColor(color);
+                        XPhoneStatusBar.sStatusBarView.setBackgroundColor(color);
+                        if (XPhoneStatusBar.sNavigationBarView != null) {
+                            XPhoneStatusBar.sNavigationBarView.setBackgroundColor(color);
                         }
                     }
                 }
@@ -65,25 +62,16 @@ public class XSystemUI {
     };
 
     private static void setStatusBar2Translucent() {
-        XSystemUI.sStatusBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
-        XSystemUI.sStatusBarView.setBackground(new BarBackgroundDrawable(
-                XSystemUI.sStatusBarView.getContext(), XActivity.mResources,
+        XPhoneStatusBar.sStatusBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
+        XPhoneStatusBar.sStatusBarView.setBackground(new BarBackgroundDrawable(
+                XPhoneStatusBar.sStatusBarView.getContext(), XActivity.mResources,
                 R.drawable.status_background));
-        if (XSystemUI.sNavigationBarView != null) {
-            XSystemUI.sNavigationBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
-            XSystemUI.sNavigationBarView.setBackground(new BarBackgroundDrawable(
-                    XSystemUI.sNavigationBarView.getContext(),
+        if (XPhoneStatusBar.sNavigationBarView != null) {
+            XPhoneStatusBar.sNavigationBarView.setBackgroundColor(KITKAT_TRANSPARENT_COLOR);
+            XPhoneStatusBar.sNavigationBarView.setBackground(new BarBackgroundDrawable(
+                    XPhoneStatusBar.sNavigationBarView.getContext(),
                     XActivity.mResources, R.drawable.nav_background));
         }
-    }
-
-    public static void initZygote(StartupParam startupParam) throws Throwable {
-    }
-
-    public static void handleInitPackageResources(InitPackageResourcesParam resparam)
-            throws Throwable {
-        if (!resparam.packageName.equals(PACKAGE_NAME))
-            return;
     }
 
     public static void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
@@ -94,55 +82,47 @@ public class XSystemUI {
         Class<?> PhoneStatusBar = XposedHelpers.findClass(
                 "com.android.systemui.statusbar.phone.PhoneStatusBar",
                 lpparam.classLoader);
+
         try {
             XposedHelpers.findAndHookMethod(PhoneStatusBar, "makeStatusBarView",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            try {
-                                sNavigationBarView = (View) XposedHelpers.getObjectField(
-                                        param.thisObject,
-                                        "mNavigationBarView");
-                            } catch (NoSuchFieldError e) {
-                            }
-                        }
-                    });
-        } catch (NoSuchMethodError e) {
-        }
-
-        try {
-            Class<?> PhoneStatusBarView = XposedHelpers.findClass(
-                    "com.android.systemui.statusbar.phone.PhoneStatusBarView",
-                    lpparam.classLoader);
-
-            XposedBridge.hookAllConstructors(PhoneStatusBarView, new XC_MethodHook() {
-
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    sStatusBarView = (View) param.thisObject;
-                    Context context = (Context) param.args[0];
-                    IntentFilter iF = new IntentFilter();
-                    iF.addAction(ACTION_CHANGE_STATUS_BAR);
-                    iF.addAction(Intent.ACTION_SCREEN_ON);
-                    iF.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-                    context.registerReceiver(mReceiver, iF);
-                }
-            });
-        } catch (ClassNotFoundError e) {
-
+                    makeStatusBarViewHook);
+        } catch (Throwable t) {
+            XposedBridge.log(t);
         }
     }
+
+    private static XC_MethodHook makeStatusBarViewHook = new XC_MethodHook() {
+
+        @Override
+        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+            try {
+                sNavigationBarView = (View) XposedHelpers.getObjectField(
+                        param.thisObject, "mNavigationBarView");
+            } catch (NoSuchFieldError e) {
+            }
+            sStatusBarView = (View) XposedHelpers.getObjectField(param.thisObject,
+                    "mStatusBarView");
+            Context context = (Context) XposedHelpers.getObjectField(param.thisObject,
+                    "mContext");
+            IntentFilter iF = new IntentFilter();
+            iF.addAction(ACTION_CHANGE_STATUS_BAR);
+            iF.addAction(Intent.ACTION_SCREEN_ON);
+            iF.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+            context.registerReceiver(mReceiver, iF);
+        }
+    };
 
     public static void changeColorAuto(Activity activity, boolean hasActionBar) {
 
         Intent statusBarIntent = new Intent();
-        statusBarIntent.setAction(XSystemUI.ACTION_CHANGE_STATUS_BAR);
+        statusBarIntent.setAction(XPhoneStatusBar.ACTION_CHANGE_STATUS_BAR);
 
         int tintColor = XActivity.getTranslucentState(activity) ? KITKAT_TRANSPARENT_COLOR
                 : Color.BLACK;
+        View container = null;
 
         if (hasActionBar) {
-            View container = (View) XposedHelpers.getObjectField(activity.getActionBar(),
+            container = (View) XposedHelpers.getObjectField(activity.getActionBar(),
                     "mContainerView");
             Drawable mBackground = (Drawable) XposedHelpers.getObjectField(
                     container, "mBackground");
@@ -151,12 +131,7 @@ public class XSystemUI {
                 tintColor = Utils.getMainColorFromActionBarDrawable(mBackground);
             }
 
-            tintColor = overrideWhiteColor(tintColor);
-
-            statusBarIntent.putExtra("statusBarColor", tintColor);
-            container.getContext().sendBroadcast(statusBarIntent);
         } else {
-            View container = null;
             boolean hasActionBarLikeView = false;
             View dector = activity.getWindow().getDecorView();
             List<View> findViews = new ArrayList<View>();
@@ -213,12 +188,12 @@ public class XSystemUI {
 
                 }
             }
-
-            tintColor = overrideWhiteColor(tintColor);
-
-            statusBarIntent.putExtra("statusBarColor", tintColor);
-            activity.sendBroadcast(statusBarIntent);
         }
+
+        tintColor = overrideWhiteColor(tintColor);
+
+        statusBarIntent.putExtra("statusBarColor", tintColor);
+        activity.sendBroadcast(statusBarIntent);
     }
 
     public static void changeColorCustom(Activity activity, int tintColor) {
@@ -226,7 +201,7 @@ public class XSystemUI {
                 : tintColor;
 
         Intent statusBarIntent = new Intent();
-        statusBarIntent.setAction(XSystemUI.ACTION_CHANGE_STATUS_BAR);
+        statusBarIntent.setAction(XPhoneStatusBar.ACTION_CHANGE_STATUS_BAR);
         statusBarIntent.putExtra("statusBarColor", tintColor);
         activity.sendBroadcast(statusBarIntent);
     }
@@ -235,6 +210,9 @@ public class XSystemUI {
         int red = Color.red(tintColor);
         int green = Color.green(tintColor);
         int blue = Color.blue(tintColor);
+
+        XposedBridge.log("red:" + red + " green:" + green + " blue:" + blue + " alpha:"
+                + Color.alpha(tintColor));
         if (red > 204 && green > 204 && blue > 204) {
             // do nothing when color is about white
             tintColor = Color.BLACK;

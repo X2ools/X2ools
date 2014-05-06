@@ -6,11 +6,12 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    
+
     <application
         android:name=".X2oolsApplication"
         android:allowBackup="true"
@@ -26,30 +27,32 @@
         <meta-data
             android:name="xposeddescription"
             android:value="Customization of tools like Wechat, Weibo, and UI development \n(by JDSong and bjzhou)" />
-        
-        <activity android:name="org.x2ools.X2oolsActivity">
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN"></action>
-                <category android:name="android.intent.category.LAUNCHER"/>
+
+        <activity android:name="org.x2ools.X2oolsActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" >
+                </action>
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <receiver 
-            android:name="com.juuda.droidmock.mock.MockReceiver">
+        <activity android:name="org.x2ools.t9apps.T9AppsActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <receiver android:name="com.juuda.droidmock.mock.MockReceiver" >
             <intent-filter>
-                <action android:name="android.mock"/>
+                <action android:name="android.mock" />
             </intent-filter>
         </receiver>
-        
-       <receiver 
-            android:name="BootReceiver">
+        <receiver android:name="BootReceiver" >
             <intent-filter>
-                <action android:name="android.mock"/>
+                <action android:name="android.mock" />
             </intent-filter>
         </receiver>
-        
-        <service 
-            android:name="org.x2ools.contextsettings.ContextSettingsService">
+
+        <service android:name="org.x2ools.contextsettings.ContextSettingsService" >
         </service>
     </application>
 

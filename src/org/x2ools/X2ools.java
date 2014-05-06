@@ -12,6 +12,7 @@ import org.x2ools.superdebug.SuperDebug;
 import org.x2ools.system.XActionBarContainer;
 import org.x2ools.system.XActivity;
 import org.x2ools.system.XPhoneStatusBar;
+import org.x2ools.system.XSearchPanelView;
 import org.x2ools.wechat.WeChat;
 
 public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageResources,
@@ -38,6 +39,7 @@ public class X2ools implements IXposedHookZygoteInit, IXposedHookInitPackageReso
         // SuperDebug.handleLoadPackage(lpparam);
         QuickSettings.handleLoadPackage(lpparam);
         XPhoneStatusBar.handleLoadPackage(lpparam);
+        XSearchPanelView.handleLoadPackage(lpparam);
     }
 
 }

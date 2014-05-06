@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -56,6 +56,12 @@
             android:key="status_color"
             android:summary="@string/status_color_summary"
             android:title="@string/status_color_title" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="t9_search"
+            android:summary="@string/t9_search_summary"
+            android:title="@string/t9_search_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

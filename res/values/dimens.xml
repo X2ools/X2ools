@@ -10,7 +10,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+ * limitations under the License.
 -->
 
 <resources>
@@ -52,5 +52,6 @@
     <dimen name="qs_tile_margin_below_icon">17dp</dimen>
     <!-- Quick Settings tile geometry: icon size -->
     <dimen name="qs_tile_icon_size">32dp</dimen>
+    <dimen name="margin_normal">10dp</dimen>
 
 </resources>

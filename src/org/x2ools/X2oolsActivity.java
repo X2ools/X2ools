@@ -24,6 +24,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
     public static final String KEY_CONTEXT_SETTINGS = "enable_context_settings";
 
     public static final String KEY_STATUS_COLOR = "status_color";
+    public static final String KEY_T9_SEARCH = "t9_search";
 
     public static final String ACTION_WECHAT_SCAN_CHANGED = "x2ools.action.wechat.scan.changed";
 
@@ -62,6 +63,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         editor.putBoolean(KEY_WECHAT_SCAN, prefs.getBoolean(KEY_WECHAT_SCAN, false));
         editor.putBoolean(KEY_CONTEXT_SETTINGS, prefs.getBoolean(KEY_CONTEXT_SETTINGS, true));
         editor.putInt(KEY_STATUS_COLOR, prefs.getInt(KEY_STATUS_COLOR, Color.TRANSPARENT));
+        editor.putBoolean(KEY_T9_SEARCH, prefs.getBoolean(KEY_T9_SEARCH, true));
         editor.commit();
     }
     

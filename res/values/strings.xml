@@ -18,7 +18,7 @@
     <string name="system">系统</string>
     <string name="press_color_to_apply">点击颜色应用</string>
     <string name="dialog_color_picker">颜色选择器</string>
-    <string name="t9_search_summary">使用T9应用搜索替代Google Now（HOME键向上滑动）</string>
+    <string name="t9_search_summary">使用T9应用搜索替代最近任务列表</string>
     <string name="t9_search_title">T9应用搜索</string>
 
 </resources>

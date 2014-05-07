@@ -3,7 +3,6 @@ package org.x2ools.t9apps;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;

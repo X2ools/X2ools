@@ -10,6 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -100,12 +101,10 @@ public class AppsGridView extends GridView {
             }
         }
         mApplications = allapplications;
-        Collections.sort(mApplications, comparator);
         mFilteredApplications = mApplications;
         mAppsAdapter = new AppsAdapter();
         setAdapter(mAppsAdapter);
         mAppsAdapter.notifyDataSetChanged();
-
         return allapplications;
     }
     
@@ -155,15 +154,19 @@ public class AppsGridView extends GridView {
                         Log.d(TAG, "add " + label);
                     }
                 }
+                Collections.sort(filteredApplications, comparator);
                 filterResults.values = filteredApplications;
                 return filterResults;
             }
 
             @SuppressWarnings("unchecked")
             @Override
-            protected void publishResults(CharSequence arg0,
+            protected void publishResults(CharSequence charSequence,
                     FilterResults results) {
                 mFilteredApplications = (List<ApplicationInfo>) results.values;
+                if(TextUtils.isEmpty(charSequence)) {
+                    mFilteredApplications = mApplications;
+                }
                 if (results.count > 0) {
                     notifyDataSetChanged();
                 } else {

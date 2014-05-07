@@ -1,143 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.x2ools.t9apps.T9AppsView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/t9AppsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/t9AppsView"
-     >
+    android:background="@color/translucent" >
+
     <FrameLayout
-        android:layout_alignParentRight="true"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mainViewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-    <RelativeLayout
-        android:id="@+id/mainView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#9000">
-	    <TextView 
-	        android:id="@+id/numFilter"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_centerHorizontal="true"
-	        android:textSize="16pt"/>
-	
-	    <!-- TODO: add buttons dynamically -->
-	    <LinearLayout
-	        android:id="@+id/buttonBottom"
-	        android:layout_alignParentBottom="true"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal">
-	        <Button 
-	            android:id="@+id/buttonBack"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="BACK"/>
-	        <Button 
-	            android:id="@+id/button0"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="0"/>
-	        <Button 
-	            android:id="@+id/buttonDelete"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="X"/>
-	    </LinearLayout>
-	    
-	    <LinearLayout
-	        android:id="@+id/button789"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:layout_above="@id/buttonBottom">
-	        <Button 
-	            android:id="@+id/button7"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="7(PQRS)"/>
-	        <Button 
-	            android:id="@+id/button8"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="8(TUV)"/>
-	        <Button
-	            android:id="@+id/button9"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="9(WXYZ)"/>
-	    </LinearLayout>
-	    
-	    
-	    <LinearLayout
-	        android:id="@+id/button456"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:layout_above="@id/button789">
-	        <Button 
-	            android:id="@+id/button4"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="4(GHI)"/>
-	        <Button 
-	            android:id="@+id/button5"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="5(JKL)"/>
-	        <Button
-	            android:id="@+id/button6"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="6(MNO)"/>
-	    </LinearLayout>
-	    
-	    <LinearLayout
-	        android:id="@+id/button123"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:layout_above="@id/button456">
-	        <Button 
-	            android:id="@+id/button1"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="1"/>
-	        <Button 
-	            android:id="@+id/button2"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="2(ABC)"/>
-	        <Button
-	            android:id="@+id/button3"
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="wrap_content"
-	            android:text="3(DEF)"/>
-	    </LinearLayout>
-	    
-	    <org.x2ools.t9apps.AppsGridView
-	        android:id="@+id/appsList"
-	        android:layout_above="@id/button123"
-	        android:layout_below="@id/numFilter"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:numColumns="3"
-	        >
-	    </org.x2ools.t9apps.AppsGridView>
-	   
-    </RelativeLayout>
+        android:layout_alignParentRight="true" >
+
+        <RelativeLayout
+            android:id="@+id/mainView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/numFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="16pt" />
+
+            <org.x2ools.t9apps.AppsGridView
+                android:id="@+id/appsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/numFilter"
+                android:layout_above="@+id/dialpad"
+                android:numColumns="3" >
+            </org.x2ools.t9apps.AppsGridView>
+
+            <!-- TODO: add buttons dynamically -->
+
+            <TableLayout
+                android:id="@+id/dialpad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <TableRow
+                    android:id="@+id/button123"
+                    android:layout_height="0px"
+                    android:layout_weight="1" >
+
+                    <ImageButton
+                        android:id="@+id/button1"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_1" />
+
+                    <ImageButton
+                        android:id="@+id/button2"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_2" />
+
+                    <ImageButton
+                        android:id="@+id/button3"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_3" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/button456"
+                    android:layout_height="0px"
+                    android:layout_weight="1" >
+
+                    <ImageButton
+                        android:id="@+id/button4"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_4" />
+
+                    <ImageButton
+                        android:id="@+id/button5"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_5" />
+
+                    <ImageButton
+                        android:id="@+id/button6"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_6" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/button789"
+                    android:layout_height="0px"
+                    android:layout_weight="1" >
+
+                    <ImageButton
+                        android:id="@+id/button7"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_7" />
+
+                    <ImageButton
+                        android:id="@+id/button8"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_8" />
+
+                    <ImageButton
+                        android:id="@+id/button9"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_9" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/buttonBottom"
+                    android:layout_height="0px"
+                    android:layout_weight="1" >
+
+                    <ImageButton
+                        android:id="@+id/buttonBack"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_star" />
+
+                    <ImageButton
+                        android:id="@+id/button0"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_0" />
+
+                    <ImageButton
+                        android:id="@+id/buttonDelete"
+                        style="@style/DialtactsDialpadButtonStyle"
+                        android:src="@drawable/dial_num_pound" />
+                </TableRow>
+            </TableLayout>
+        </RelativeLayout>
     </FrameLayout>
+
 </org.x2ools.t9apps.T9AppsView>

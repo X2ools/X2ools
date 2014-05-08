@@ -17,41 +17,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.x2ools.R;
-import org.x2ools.t9apps.match.Matcher;
+import org.x2ools.t9apps.match.T9Search;
+import org.x2ools.t9apps.match.T9Search.ApplicationItem;
+import org.x2ools.t9apps.match.T9Search.T9SearchResult;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class AppsGridView extends GridView {
-    private ActivityManager mActivityManager;
-    private PackageManager mPackageManager;
-    private List<ApplicationInfo> mApplications;
-    private LayoutInflater mLayoutInflater;
-    private List<ApplicationInfo> mFilteredApplications;
     private AppsAdapter mAppsAdapter;
     private static final String TAG = "AppsGridView";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private Context mContext;
+    private static T9Search sT9Search;
+    private ArrayList<ApplicationItem> apps;
+    private PackageManager mPackageManager;
+    private ActivityManager mActivityManager;
+    private LayoutInflater mLayoutInflater;
 
     public AppsGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         mPackageManager = context.getPackageManager();
+        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         mLayoutInflater = LayoutInflater.from(context);
+        // sT9Search = new T9Search(context);
         setApplicationsData();
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                sT9Search = new T9Search(mContext);
+            }
+        }).start();
     }
 
     @Override
@@ -60,12 +63,57 @@ public class AppsGridView extends GridView {
         super.onVisibilityChanged(changedView, visibility);
     }
 
-    public List<ApplicationInfo> setApplicationsData() {
-        PackageManager pm = mPackageManager;
-        ActivityManager am = mActivityManager;
-        List<RecentTaskInfo> recentTasks = am.getRecentTasks(30,
+    public void setApplicationsData() {
+        apps = getRecentApps();
+        mAppsAdapter = new AppsAdapter(apps);
+        setAdapter(mAppsAdapter);
+        mAppsAdapter.notifyDataSetChanged();
+    }
+
+    public boolean startAcivityByIndex(int index) {
+        if (DEBUG) {
+            dumpApplications();
+        }
+        if (index < apps.size()) {
+            ApplicationItem item = apps.get(index);
+            Intent i = mPackageManager.getLaunchIntentForPackage(item.packageName);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(i);
+            Log.d(TAG, "start " + item.packageName);
+            return true;
+        }
+        return false;
+    }
+
+    public void dumpApplications() {
+        for (ApplicationItem item : apps) {
+            Log.d(TAG, "info.packageName " + item.packageName);
+        }
+    }
+
+    public void filter(String string) {
+        if (sT9Search == null)
+            return;
+        if (TextUtils.isEmpty(string)) {
+            apps = getRecentApps();
+            mAppsAdapter = new AppsAdapter(apps);
+            setAdapter(mAppsAdapter);
+            mAppsAdapter.notifyDataSetChanged();
+            return;
+        }
+        T9SearchResult result = sT9Search.search(string);
+        if (result != null) {
+            apps = sT9Search.search(string).getResults();
+            mAppsAdapter = new AppsAdapter(apps);
+            setAdapter(mAppsAdapter);
+            mAppsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public ArrayList<ApplicationItem> getRecentApps() {
+        List<RecentTaskInfo> recentTasks = mActivityManager.getRecentTasks(9,
                 ActivityManager.RECENT_IGNORE_UNAVAILABLE | ActivityManager.RECENT_WITH_EXCLUDED);
-        List<ApplicationInfo> allapplications = new ArrayList<ApplicationInfo>();
+        ArrayList<ApplicationItem> recents = new ArrayList<ApplicationItem>();
         if (DEBUG) {
             Log.d(TAG, "recentTasks:  " + recentTasks);
         }
@@ -77,112 +125,45 @@ public class AppsGridView extends GridView {
                                 + recentInfo.baseIntent.getComponent().getPackageName());
 
                     }
-                    ApplicationInfo info = pm.getApplicationInfo(recentInfo.baseIntent
+                    ApplicationInfo info = mPackageManager.getApplicationInfo(recentInfo.baseIntent
                             .getComponent().getPackageName(), 0);
-                    allapplications.add(info);
+                    boolean added = false;
+                    for (ApplicationItem tmp : recents) {
+                        if (tmp.packageName.equals(info.packageName))
+                            added = true;
+                    }
+                    if (!added) {
+                        ApplicationItem item = new ApplicationItem();
+                        item.name = info.loadLabel(mPackageManager).toString();
+                        item.packageName = info.packageName;
+                        item.drawable = info.loadIcon(mPackageManager);
+                        recents.add(item);
+                    }
                 } catch (NameNotFoundException e) {
                     Log.e(TAG, "cannot find package", e);
                 }
             }
         }
 
-        allapplications.addAll(pm.getInstalledApplications(0));
-        Iterator<ApplicationInfo> iterator = allapplications.iterator();
-        Set<String> addedPackages = new HashSet<String>();
-        // remove duplicate and not launchable package
-        while (iterator.hasNext()) {
-            ApplicationInfo info = iterator.next();
-            if (pm.getLaunchIntentForPackage(info.packageName) == null
-                    || addedPackages.contains(info.packageName)) {
-                iterator.remove();
-            }
-            else {
-                addedPackages.add(info.packageName);
-            }
-        }
-        mApplications = allapplications;
-        mFilteredApplications = mApplications;
-        mAppsAdapter = new AppsAdapter();
-        setAdapter(mAppsAdapter);
-        mAppsAdapter.notifyDataSetChanged();
-        return allapplications;
-    }
-    
-    private Comparator<ApplicationInfo> comparator = new Comparator<ApplicationInfo>() {
-
-        @Override
-        public int compare(ApplicationInfo lhs, ApplicationInfo rhs) {
-            CharSequence llabel = lhs.loadLabel(mPackageManager);
-            CharSequence rlabel = rhs.loadLabel(mPackageManager);
-            
-            if(llabel.length() > rlabel.length()) {
-                return 1;
-            } else if(llabel.length() < rlabel.length()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    };
-
-    public void filter(String filter) {
-        mAppsAdapter.getFilter().filter(filter);
+        return recents;
     }
 
-    static class ViewHolder {
-        TextView textTitle;
-        ImageView icon;
-    }
+    public class AppsAdapter extends BaseAdapter {
 
-    class AppsAdapter extends BaseAdapter implements Filterable {
+        private ArrayList<ApplicationItem> mAppItems;
 
-        class NameFilter extends Filter {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults filterResults = new FilterResults();
-                List<ApplicationInfo> filteredApplications = new ArrayList<ApplicationInfo>();
-                for (Iterator<ApplicationInfo> iterator = mApplications
-                        .iterator(); iterator.hasNext();) {
-                    ApplicationInfo info = iterator.next();
-                    CharSequence label = info.loadLabel(mPackageManager);
-                    Log.d(TAG, "---> name=" + label + "charSequence : "
-                            + charSequence);
-                    if (Matcher
-                            .match(label.toString(), charSequence.toString())) {
-                        filteredApplications.add(info);
-                        Log.d(TAG, "add " + label);
-                    }
-                }
-                Collections.sort(filteredApplications, comparator);
-                filterResults.values = filteredApplications;
-                return filterResults;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence charSequence,
-                    FilterResults results) {
-                mFilteredApplications = (List<ApplicationInfo>) results.values;
-                if(TextUtils.isEmpty(charSequence)) {
-                    mFilteredApplications = mApplications;
-                }
-                if (results.count > 0) {
-                    notifyDataSetChanged();
-                } else {
-                    notifyDataSetInvalidated();
-                }
-            }
+        public AppsAdapter(ArrayList<ApplicationItem> apps) {
+            mAppItems = apps;
         }
 
         @Override
         public int getCount() {
-            return mFilteredApplications.size();
+            return mAppItems.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return mFilteredApplications.get(position);
+            return mAppItems.get(position);
         }
 
         @Override
@@ -193,7 +174,7 @@ public class AppsGridView extends GridView {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
-            final ApplicationInfo info = (ApplicationInfo) getItem(position);
+            final ApplicationItem item = (ApplicationItem) getItem(position);
             if (convertView == null) {
                 convertView = mLayoutInflater.inflate(R.layout.package_item,
                         null);
@@ -213,11 +194,11 @@ public class AppsGridView extends GridView {
 
                 @Override
                 public void onClick(View arg0) {
-                    getContext().startActivity(
+                    mContext.startActivity(
                             mPackageManager.getLaunchIntentForPackage(
-                                    info.packageName).addFlags(
+                                    item.packageName).addFlags(
                                     Intent.FLAG_ACTIVITY_NEW_TASK));
-                    ((Activity)getContext()).finish();
+                    ((Activity) mContext).finish();
 
                 }
 
@@ -231,41 +212,21 @@ public class AppsGridView extends GridView {
                     Intent i = new Intent();
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                    i.setData(Uri.parse("package:" + info.packageName));
-                    getContext().startActivity(i);
-                    ((Activity)getContext()).finish();
+                    i.setData(Uri.parse("package:" + item.packageName));
+                    mContext.startActivity(i);
+                    ((Activity) mContext).finish();
                     return true;
                 }
 
             });
-            viewHolder.textTitle.setText(info.loadLabel(mPackageManager));
-            viewHolder.icon.setImageDrawable(info.loadIcon(mPackageManager));
+            viewHolder.textTitle.setText(item.name);
+            viewHolder.icon.setImageDrawable(item.drawable);
             return convertView;
         }
-
-        public android.widget.Filter getFilter() {
-            return new NameFilter();
-        }
     }
 
-    public boolean startAcivityByIndex(int index) {
-        if (DEBUG) {
-            dumpApplications();
-        }
-        if (index < mFilteredApplications.size()) {
-            ApplicationInfo info = mFilteredApplications.get(index);
-            Intent i = mPackageManager.getLaunchIntentForPackage(info.packageName);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(i);
-            Log.d(TAG, "start " + info.packageName);
-            return true;
-        }
-        return false;
-    }
-
-    public void dumpApplications() {
-        for (ApplicationInfo info : mFilteredApplications) {
-            Log.d(TAG, "info.packageName " + info.packageName);
-        }
+    static class ViewHolder {
+        TextView textTitle;
+        ImageView icon;
     }
 }

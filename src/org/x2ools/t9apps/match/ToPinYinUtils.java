@@ -2,6 +2,7 @@
 package org.x2ools.t9apps.match;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -48,31 +49,31 @@ public class ToPinYinUtils {
         return zhongWenPinYin;
     }
 
-    /**
-     * ������?
-     * 
-     * @return
-     */
     private static HanyuPinyinOutputFormat getDefaultOutputFormat() {
         HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
-        format.setCaseType(HanyuPinyinCaseType.UPPERCASE);// ��д
-        format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);// û����������
-        format.setVCharType(HanyuPinyinVCharType.WITH_U_AND_COLON);// u��ʾ
+        format.setCaseType(HanyuPinyinCaseType.UPPERCASE);
+        format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+        format.setVCharType(HanyuPinyinVCharType.WITH_U_AND_COLON);
         return format;
     }
 
     @SuppressLint("DefaultLocale")
-    public static byte[] getPinyinNum(String name) {
+    public static String getPinyinNum(String name) {
         try {
             if (name != null && name.length() != 0) {
                 int len = name.length();
-                byte[] nums = new byte[len];
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < len; i++) {
                     String tmp = name.substring(i);
-                    nums[i] = getOneNumFromAlpha(ToPinYinUtils.getPinYin(tmp)
-                            .toLowerCase().charAt(0));
+                    char c = tmp.charAt(0);
+                    if(c <= '9' && c>= '0') {
+                        sb.append(c);
+                    } else {
+                        sb.append(getOneNumFromAlpha(ToPinYinUtils.getPinYin(tmp)
+                                .toLowerCase().charAt(0)));
+                    }
                 }
-                return nums;
+                return sb.toString();
             }
         } catch (BadHanyuPinyinOutputFormatCombination e) {
             e.printStackTrace();
@@ -80,44 +81,44 @@ public class ToPinYinUtils {
         return null;
     }
 
-    private static byte getOneNumFromAlpha(char firstAlpha) {
+    private static String getOneNumFromAlpha(char firstAlpha) {
         switch (firstAlpha) {
             case 'a':
             case 'b':
             case 'c':
-                return 2;
+                return "2";
             case 'd':
             case 'e':
             case 'f':
-                return 3;
+                return "3";
             case 'g':
             case 'h':
             case 'i':
-                return 4;
+                return "4";
             case 'j':
             case 'k':
             case 'l':
-                return 5;
+                return "5";
             case 'm':
             case 'n':
             case 'o':
-                return 6;
+                return "6";
             case 'p':
             case 'q':
             case 'r':
             case 's':
-                return 7;
+                return "7";
             case 't':
             case 'u':
             case 'v':
-                return 8;
+                return "8";
             case 'w':
             case 'x':
             case 'y':
             case 'z':
-                return 9;
+                return "9";
             default:
-                return 0;
+                return "0";
         }
     }
 

@@ -58,7 +58,7 @@ public class ToPinYinUtils {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String getPinyinNum(String name) {
+    public static String getPinyinNum(String name, boolean full) {
         try {
             if (name != null && name.length() != 0) {
                 int len = name.length();
@@ -69,8 +69,15 @@ public class ToPinYinUtils {
                     if(c <= '9' && c>= '0') {
                         sb.append(c);
                     } else {
-                        sb.append(getOneNumFromAlpha(ToPinYinUtils.getPinYin(tmp)
-                                .toLowerCase().charAt(0)));
+                        if(full) {
+                            String pinyin = ToPinYinUtils.getPinYin(tmp).toLowerCase();
+                            for(int j=0;j<pinyin.length();j++) {
+                                sb.append(getOneNumFromAlpha(pinyin.charAt(j)));
+                            }
+                        } else {
+                            sb.append(getOneNumFromAlpha(ToPinYinUtils.getPinYin(tmp)
+                                    .toLowerCase().charAt(0)));
+                        }
                     }
                 }
                 return sb.toString();

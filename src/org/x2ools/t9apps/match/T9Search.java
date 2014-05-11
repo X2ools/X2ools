@@ -24,7 +24,6 @@ import android.graphics.drawable.Drawable;
 import org.x2ools.R;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,16 +56,17 @@ public class T9Search {
     private void getAll() {
         if (sT9Map == null)
             initT9Map();
-        
+
         mApplications = new ArrayList<ApplicationInfo>();
-        
+
         mApplications.addAll(mPackageManager.getInstalledApplications(0));
         for (ApplicationInfo appinfo : mApplications) {
-            if(mPackageManager.getLaunchIntentForPackage(appinfo.packageName) == null) 
+            if (mPackageManager.getLaunchIntentForPackage(appinfo.packageName) == null)
                 continue;
             ApplicationItem appitem = new ApplicationItem();
             appitem.name = appinfo.loadLabel(mPackageManager).toString();
-            appitem.pinyinNum = ToPinYinUtils.getPinyinNum(appitem.name);
+            appitem.pinyinNum = ToPinYinUtils.getPinyinNum(appitem.name, false);
+            appitem.fullpinyinNum = ToPinYinUtils.getPinyinNum(appitem.name, true);
             appitem.packageName = appinfo.packageName;
             appitem.drawable = appinfo.loadIcon(mPackageManager);
             mApps.add(appitem);
@@ -93,26 +93,24 @@ public class T9Search {
     public static class ApplicationItem {
         public String name;
         public String pinyinNum;
+        public String fullpinyinNum;
         public String packageName;
         public Drawable drawable;
-        int nameMatchId;
     }
 
     public T9SearchResult search(String number) {
         mNameResults.clear();
-        number = removeNonDigits(number);
         int pos = 0;
         boolean newQuery = mPrevInput == null || number.length() <= mPrevInput.length();
         // Go through each contact
         for (ApplicationItem item : (newQuery ? mApps : mAllResults)) {
-            item.nameMatchId = -1;
             pos = item.pinyinNum.indexOf(number);
             if (pos != -1) {
-                int last_space = item.pinyinNum.lastIndexOf("0", pos);
-                if (last_space == -1) {
-                    last_space = 0;
-                }
-                item.nameMatchId = pos - last_space;
+                mNameResults.add(item);
+            }
+
+            pos = item.fullpinyinNum.indexOf(number);
+            if (pos != -1) {
                 mNameResults.add(item);
             }
         }
@@ -123,19 +121,6 @@ public class T9Search {
             return new T9SearchResult(new ArrayList<ApplicationItem>(mAllResults), mContext);
         }
         return null;
-    }
-
-    public static class NameComparator implements Comparator<ApplicationItem> {
-        @Override
-        public int compare(ApplicationItem lhs, ApplicationItem rhs) {
-            int ret = lhs.nameMatchId > rhs.nameMatchId ? lhs.nameMatchId : rhs.nameMatchId;
-            if (ret == 0)
-                ret = rhs.name.length() > lhs.name.length() ? rhs.name.length()
-                        : lhs.name.length();
-            if (ret == 0)
-                ret = 0;
-            return ret;
-        }
     }
 
     private void initT9Map() {
@@ -151,18 +136,6 @@ public class T9Search {
             }
             rc++;
         }
-    }
-
-    public static String removeNonDigits(String number) {
-        int len = number.length();
-        StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            char ch = number.charAt(i);
-            if ((ch >= '0' && ch <= '9') || ch == '*' || ch == '#' || ch == '+') {
-                sb.append(ch);
-            }
-        }
-        return sb.toString();
     }
 
 }

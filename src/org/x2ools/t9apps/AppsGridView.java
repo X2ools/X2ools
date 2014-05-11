@@ -10,6 +10,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -33,12 +35,30 @@ public class AppsGridView extends GridView {
     private AppsAdapter mAppsAdapter;
     private static final String TAG = "AppsGridView";
     private static final boolean DEBUG = false;
+    protected static final int MSG_SEARCH_INITED = 0;
     private Context mContext;
     private static T9Search sT9Search;
     private ArrayList<ApplicationItem> apps;
     private PackageManager mPackageManager;
     private ActivityManager mActivityManager;
     private LayoutInflater mLayoutInflater;
+    private String mFilterStr = null;
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_SEARCH_INITED:
+                    if (!TextUtils.isEmpty(mFilterStr)) {
+                        filter(mFilterStr);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
     public AppsGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -53,6 +73,7 @@ public class AppsGridView extends GridView {
             @Override
             public void run() {
                 sT9Search = new T9Search(mContext);
+                mHandler.sendEmptyMessage(MSG_SEARCH_INITED);
             }
         }).start();
     }
@@ -92,6 +113,7 @@ public class AppsGridView extends GridView {
     }
 
     public void filter(String string) {
+        mFilterStr = string;
         if (sT9Search == null)
             return;
         if (TextUtils.isEmpty(string)) {
@@ -127,6 +149,8 @@ public class AppsGridView extends GridView {
                     }
                     ApplicationInfo info = mPackageManager.getApplicationInfo(recentInfo.baseIntent
                             .getComponent().getPackageName(), 0);
+                    if (mPackageManager.getLaunchIntentForPackage(info.packageName) == null)
+                        continue;
                     boolean added = false;
                     for (ApplicationItem tmp : recents) {
                         if (tmp.packageName.equals(info.packageName))

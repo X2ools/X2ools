@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.10.+'
+    }
+}
+
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.0.3'
+
+    lintOptions {
+        checkReleaseBuilds true
+        abortOnError false
+    }
+
+    defaultConfig {
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix '-debug'
+        }
+
+        release {
+            zipAlign true
+            //runProguard true
+            //proguardFile 'proguard-rules.txt'
+            //signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    provided files('XposedBridgeApi.jar')
+    compile files('libs/droidmocks.jar')
+    compile files('libs/pinyin4j-2.5.0.jar')
+}

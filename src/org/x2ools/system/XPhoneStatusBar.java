@@ -211,8 +211,8 @@ public class XPhoneStatusBar {
         int green = Color.green(tintColor);
         int blue = Color.blue(tintColor);
 
-        XposedBridge.log("red:" + red + " green:" + green + " blue:" + blue + " alpha:"
-                + Color.alpha(tintColor));
+//        XposedBridge.log("red:" + red + " green:" + green + " blue:" + blue + " alpha:"
+//                + Color.alpha(tintColor));
         if (red > 204 && green > 204 && blue > 204) {
             // do nothing when color is about white
             tintColor = Color.BLACK;

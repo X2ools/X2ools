@@ -21,12 +21,12 @@
     <PreferenceCategory
         android:key="category_wechat"
         android:title="@string/wechat" >
+        <!--
         <SwitchPreference
-            DroidSansFallback.ttf=""
             android:defaultValue="true"
             android:key="wechat_remove_game"
             android:title="@string/remove_game" />
-
+        -->
         <EditTextPreference
             android:defaultValue="/sdcard/X2ools/chat_font.ttf"
             android:key="wechat_chat_font"

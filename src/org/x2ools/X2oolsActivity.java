@@ -17,7 +17,7 @@ import java.io.File;
 
 public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
-    public static final String KEY_WECHAT_REMOVE_GAME = "wechat_remove_game";
+//    public static final String KEY_WECHAT_REMOVE_GAME = "wechat_remove_game";
     public static final String KEY_WECHAT_CHAT_FONT = "wechat_chat_font";
     public static final String KEY_WECHAT_SCAN = "wechat_scan";
 
@@ -59,7 +59,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         x2ools_prefs = new X2oolsSharedPreferences();
         Editor editor = x2ools_prefs.edit();
         editor.putString(KEY_WECHAT_CHAT_FONT, prefs.getString(KEY_WECHAT_CHAT_FONT, ""));
-        editor.putBoolean(KEY_WECHAT_REMOVE_GAME, prefs.getBoolean(KEY_WECHAT_REMOVE_GAME, false));
+//        editor.putBoolean(KEY_WECHAT_REMOVE_GAME, prefs.getBoolean(KEY_WECHAT_REMOVE_GAME, false));
         editor.putBoolean(KEY_WECHAT_SCAN, prefs.getBoolean(KEY_WECHAT_SCAN, false));
         editor.putBoolean(KEY_CONTEXT_SETTINGS, prefs.getBoolean(KEY_CONTEXT_SETTINGS, true));
         editor.putInt(KEY_STATUS_COLOR, prefs.getInt(KEY_STATUS_COLOR, Color.TRANSPARENT));

@@ -16,11 +16,8 @@ import org.x2ools.X2oolsSharedPreferences;
 public class WeChat {
     public static final String PACKAGE_NAME = "com.tencent.mm";
 
-    public static final String CLASS_SETTINGS_ABOUT_SYSTEM_UI = "com.tencent.mm.ui.setting.SettingsAboutSystemUI";
     public static final String CLASS_MM_TEXTVIEW = "com.tencent.mm.ui.base.MMTextView";
-    public static final String CLASS_FIND_MORE_FRIENDS_UI = "com.tencent.mm.ui.pluginapp.FindMoreFriendsUI";
-    public static final String CLASS_PREFERENCE = "com.tencent.mm.ui.base.preference.Preference";
-    public static final String CLASS_PREFERENCE_TITLE_CATEGORY = "com.tencent.mm.ui.base.preference.PreferenceTitleCategory";
+//    public static final String CLASS_FIND_MORE_FRIENDS_UI = "com.tencent.mm.ui.pluginapp.FindMoreFriendsUI";
 
     private static X2oolsSharedPreferences x2ools_prefs;
 
@@ -43,7 +40,7 @@ public class WeChat {
         x2ools_prefs = new X2oolsSharedPreferences();
 
         Class<?> mmTextViewClz = XposedHelpers.findClass(CLASS_MM_TEXTVIEW, lpparam.classLoader);
-        Class<?> findMoreFriendsUI = XposedHelpers.findClass(CLASS_FIND_MORE_FRIENDS_UI, lpparam.classLoader);
+//        Class<?> findMoreFriendsUI = XposedHelpers.findClass(CLASS_FIND_MORE_FRIENDS_UI, lpparam.classLoader);
 
         // change chatting font
         XposedHelpers.findAndHookMethod(mmTextViewClz, "init", new XC_MethodHook() {
@@ -56,7 +53,7 @@ public class WeChat {
                     tv.setTypeface(Typeface.createFromFile(font));
             }
         });
-
+/*
         // remove game plugin
         XposedHelpers.findAndHookMethod(findMoreFriendsUI, "aNn", new XC_MethodHook() {
 
@@ -67,6 +64,6 @@ public class WeChat {
                 XposedHelpers.callMethod(cFy, "S", "more_tab_game_recommend", canRemove);
             }
         });
-
+*/
     }
 }

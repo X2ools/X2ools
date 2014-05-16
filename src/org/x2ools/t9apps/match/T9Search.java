@@ -17,6 +17,7 @@
 package org.x2ools.t9apps.match;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -95,6 +96,8 @@ public class T9Search {
         public String pinyinNum;
         public String fullpinyinNum;
         public String packageName;
+        public int taskId;
+        public Intent baseIntent;
         public Drawable drawable;
     }
 

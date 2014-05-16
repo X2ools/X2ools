@@ -4,6 +4,7 @@ package org.x2ools.t9apps;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -161,6 +162,8 @@ public class AppsGridView extends GridView {
                         item.name = info.loadLabel(mPackageManager).toString();
                         item.packageName = info.packageName;
                         item.drawable = info.loadIcon(mPackageManager);
+                        item.taskId = recentInfo.id;
+                        item.baseIntent = recentInfo.baseIntent;
                         recents.add(item);
                     }
                 } catch (NameNotFoundException e) {
@@ -170,6 +173,32 @@ public class AppsGridView extends GridView {
         }
 
         return recents;
+    }
+
+    private boolean isTaskInRecentList(ApplicationItem item) {
+        final int taskId = item.taskId;
+        final Intent intent = item.baseIntent;
+        if ((intent != null)
+                && ((intent.getFlags() & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS) != 0)) {
+            // / M: Don't care exclude-from-recent app.
+            Log.d(TAG, "This task has flag = FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS");
+            return true;
+        }
+        final ActivityManager am = (ActivityManager)
+                mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RecentTaskInfo> recentTasks =
+                am.getRecentTasks(20, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
+
+        for (int i = 0; i < recentTasks.size(); ++i) {
+            final ActivityManager.RecentTaskInfo info = recentTasks.get(i);
+            if (info.id == taskId) {
+                return true;
+            }
+        }
+
+        Log.d(TAG, "This task is not in recent list for " + taskId);
+
+        return false;
     }
 
     public class AppsAdapter extends BaseAdapter {
@@ -218,10 +247,40 @@ public class AppsGridView extends GridView {
 
                 @Override
                 public void onClick(View arg0) {
-                    mContext.startActivity(
-                            mPackageManager.getLaunchIntentForPackage(
-                                    item.packageName).addFlags(
-                                    Intent.FLAG_ACTIVITY_NEW_TASK));
+                    if (item.taskId >= 0 && isTaskInRecentList(item)) {
+                        mActivityManager.moveTaskToFront(item.taskId,
+                                ActivityManager.MOVE_TASK_WITH_HOME);
+                        Log.v(TAG, "Move Task To Front for " + item.taskId);
+                    } else if (item.baseIntent != null) {
+                        Intent intent = item.baseIntent;
+                        intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+                                | Intent.FLAG_ACTIVITY_TASK_ON_HOME
+                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Log.v(TAG, "Starting activity " + intent);
+                        try {
+                            mContext.startActivity(intent);
+                        } catch (SecurityException e) {
+                            Log.e(TAG, "Recents does not have the permission to launch " + intent,
+                                    e);
+                            mContext.startActivity(
+                                    mPackageManager.getLaunchIntentForPackage(
+                                            item.packageName).addFlags(
+                                            Intent.FLAG_ACTIVITY_NEW_TASK));
+                        } catch (ActivityNotFoundException e) {
+                            Log.e(TAG, "Error launching activity " + intent, e);
+                            mContext.startActivity(
+                                    mPackageManager.getLaunchIntentForPackage(
+                                            item.packageName).addFlags(
+                                            Intent.FLAG_ACTIVITY_NEW_TASK));
+                        }
+
+                    } else {
+                        mContext.startActivity(
+                                mPackageManager.getLaunchIntentForPackage(
+                                        item.packageName).addFlags(
+                                        Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
+                    
                     ((Activity) mContext).finish();
 
                 }

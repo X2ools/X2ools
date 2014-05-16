@@ -39,6 +39,8 @@
         </activity>
         <activity android:name="org.x2ools.t9apps.T9AppsActivity"
             android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 

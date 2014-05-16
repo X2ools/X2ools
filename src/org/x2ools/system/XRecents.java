@@ -1,7 +1,6 @@
 
 package org.x2ools.system;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Display;
@@ -40,11 +39,9 @@ public class XRecents {
             X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
             boolean t9_search = prefs.getBoolean(X2oolsActivity.KEY_T9_SEARCH, true);
             if (t9_search) {
-                ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-                if(am.getRunningTasks(1).get(0).topActivity.getClassName().equals("org.x2ools.t9apps.T9AppsActivity"))
-                    return null;
                 Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                 intent.setClassName("org.x2ools", "org.x2ools.t9apps.T9AppsActivity");
                 mContext.startActivity(intent);
             } else {

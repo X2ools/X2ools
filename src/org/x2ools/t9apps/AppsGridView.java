@@ -158,6 +158,13 @@ public class AppsGridView extends GridView {
                             added = true;
                     }
                     if (!added) {
+                        
+                        if ((recentInfo.baseIntent != null)
+                                && ((recentInfo.baseIntent.getFlags() & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS) != 0)) {
+                            Log.d(TAG, "This task has flag = FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS");
+                            continue;
+                        }
+                        
                         ApplicationItem item = new ApplicationItem();
                         item.name = info.loadLabel(mPackageManager).toString();
                         item.packageName = info.packageName;

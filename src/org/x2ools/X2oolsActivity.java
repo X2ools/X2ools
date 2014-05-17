@@ -1,21 +1,24 @@
 
 package org.x2ools;
 
+import java.io.File;
+
+import org.x2ools.contextsettings.ContextSettingsService;
+import org.x2ools.system.XPhoneStatusBar;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.widget.Toast;
 
-import org.x2ools.contextsettings.ContextSettingsService;
-import org.x2ools.system.XPhoneStatusBar;
-
-import java.io.File;
-
-public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener, OnPreferenceClickListener {
 
 //    public static final String KEY_WECHAT_REMOVE_GAME = "wechat_remove_game";
     public static final String KEY_WECHAT_CHAT_FONT = "wechat_chat_font";
@@ -25,6 +28,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
 
     public static final String KEY_STATUS_COLOR = "status_color";
     public static final String KEY_T9_SEARCH = "t9_search";
+    public static final String KEY_PERMISSION_ALLOW = "permission_allow";
 
     public static final String ACTION_WECHAT_SCAN_CHANGED = "x2ools.action.wechat.scan.changed";
 
@@ -40,6 +44,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
         prefs = getPreferenceScreen().getSharedPreferences();
+        getPreferenceScreen().setOnPreferenceClickListener(this);
         initX2oolsPrefs();
     }
 
@@ -63,6 +68,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         editor.putBoolean(KEY_WECHAT_SCAN, prefs.getBoolean(KEY_WECHAT_SCAN, false));
         editor.putBoolean(KEY_CONTEXT_SETTINGS, prefs.getBoolean(KEY_CONTEXT_SETTINGS, true));
         editor.putInt(KEY_STATUS_COLOR, prefs.getInt(KEY_STATUS_COLOR, Color.TRANSPARENT));
+        editor.putBoolean(KEY_PERMISSION_ALLOW, prefs.getBoolean(KEY_PERMISSION_ALLOW, true));
         editor.putBoolean(KEY_T9_SEARCH, prefs.getBoolean(KEY_T9_SEARCH, true));
         editor.commit();
     }
@@ -98,8 +104,16 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             statusbarIntent.putExtra("statusBarColor", color);
             sendBroadcast(statusbarIntent);
         }
-
+        else if(key.equals(KEY_PERMISSION_ALLOW)) {
+            Toast.makeText(this, R.string.permission_work_after_reboot, Toast.LENGTH_LONG).show();;
+        }
         updateX2oolsPrefs();
     }
+
+	@Override
+	public boolean onPreferenceClick(Preference arg0) {
+		return false;
+	}
+
 
 }

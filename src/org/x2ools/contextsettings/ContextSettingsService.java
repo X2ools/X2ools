@@ -1,6 +1,9 @@
 
 package org.x2ools.contextsettings;
 
+import org.x2ools.R;
+import org.x2ools.X2oolsActivity;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,9 +18,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-
-import org.x2ools.R;
-import org.x2ools.X2oolsActivity;
 
 public class ContextSettingsService extends Service implements ContextSettingsView.CallBack {
     private static final String TAG = "ContextSettingsService";

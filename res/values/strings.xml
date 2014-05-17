@@ -16,6 +16,10 @@
     <string name="status_color_title">状态栏颜色</string>
     <string name="status_color_summary">设置状态栏和导航栏的颜色</string>
     <string name="system">系统</string>
+    <string name="debug_tools">调试工具</string>
+    <string name="permission_work_after_reboot">修改将在重启后产生效果</string>
+    <string name="permission_allow_title">允许所有权限</string>
+    <string name="permission_allow_summary">不再校验权限以及签名,第三方应用具有系统权限以及随意设定签名</string>
     <string name="press_color_to_apply">点击颜色应用</string>
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="t9_search_summary">使用T9应用搜索替代最近任务列表</string>

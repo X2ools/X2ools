@@ -64,4 +64,14 @@
             android:title="@string/t9_search_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="category_debug"
+        android:title="@string/debug_tools" >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="permission_allow"
+            android:summary="@string/permission_allow_summary"
+            android:title="@string/permission_allow_title" />
+    </PreferenceCategory>
+    
 </PreferenceScreen>

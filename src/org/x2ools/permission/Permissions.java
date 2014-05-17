@@ -3,6 +3,9 @@ package org.x2ools.permission;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.x2ools.X2oolsActivity;
+import org.x2ools.X2oolsSharedPreferences;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,17 +17,26 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class Permissions {
     protected static final String TAG = "Permissions : ";
-	private static final boolean DEBUG_PROTECTED_BROADCAST = true;
+	private static final boolean DEBUG_PROTECTED_BROADCAST = false;
 	private static final boolean DEBUG_findClass_forName = true;
+	public static boolean DEBUG = false;
+    private static X2oolsSharedPreferences x2ools_prefs;
 
 	public static void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
-        if (!lpparam.packageName.equals("android")) {
-        	XposedBridge.log(TAG + "ignore" + lpparam.packageName);
-            return;
+        x2ools_prefs = new X2oolsSharedPreferences();
+        if(x2ools_prefs.getBoolean(X2oolsActivity.KEY_PERMISSION_ALLOW, false)) {
+        	return;
         }
-        else {
-        	XposedBridge.log(TAG + "loading android");
-        }
+		if(DEBUG) {
+			if (!lpparam.packageName.equals("android")) {
+	        	XposedBridge.log(TAG + "ignore" + lpparam.packageName);
+	            return;
+	        }
+	        else {
+	        	XposedBridge.log(TAG + "loading android");
+	        }
+		}
+
     	final String CLASS_PackageManagerService = "com.android.server.pm.PackageManagerService";
     	final String CLASS_ActivityManagerService = "com.android.server.am.ActivityManagerService";
     	final String CLASS_ProcessRecord = "com.android.server.am.ProcessRecord";

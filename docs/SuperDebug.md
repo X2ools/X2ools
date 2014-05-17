@@ -1,9 +1,10 @@
 TODO
 ====
 
-###如何获得ParentView
-获取当前的Window,然后取得ViewParent,接着调用DebugHelper就可以
+###权限
+1. 不再校验签名
+2. 不再校验权限
 
-###如何避免,多次调试
-1. 打印更多log
-2. 动态执行代码
+###调试信息
+3. 打印出framework某些类所有的方法以及fields
+4. 方法暂停执行，打出堆栈

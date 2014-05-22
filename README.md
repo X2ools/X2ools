@@ -52,3 +52,8 @@ Roadmap
 3. 界面中所有的TextView
 4. JNI
 5. use DexClassLoader
+
+###快捷方式
+1. 通知栏二维码
+2. 通知栏自定义应用
+3. 圆角图标

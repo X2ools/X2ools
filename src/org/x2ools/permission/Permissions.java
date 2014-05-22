@@ -23,6 +23,8 @@ public class Permissions {
 
     private static final boolean DEBUG_findClass_forName = true;
 
+    private static final boolean DEBUG_VERIFY_SIGNATURES = false;
+
     public static boolean DEBUG = false;
 
     private static X2oolsSharedPreferences x2ools_prefs;
@@ -152,11 +154,6 @@ public class Permissions {
         XposedBridge.log("hook compareSignatures");
         Class<?> classSignature = XposedHelpers.findClass("[Landroid.content.pm.Signature;",
                 lpparam.classLoader);
-        Method[] methods = classPackageManagerService.getMethods();
-        for (Method method : methods) {
-            Log.d(TAG, "method : " + method);
-            XposedBridge.log(TAG + "method : " + method);
-        }
         XposedHelpers.findAndHookMethod(classPackageManagerService, "compareSignatures",
                 classSignature, classSignature, new XC_MethodReplacement() {
 
@@ -171,18 +168,21 @@ public class Permissions {
                 "com.android.server.pm.PackageSetting", lpparam.classLoader);
         Class<?> classPackageParser_Package = XposedHelpers.findClass(
                 "com.android.server.pm.PackageParser$Package", lpparam.classLoader);
-        XposedBridge.log("hook verifySignaturesLP");
-        XposedHelpers.findAndHookMethod(classPackageManagerService, "verifySignaturesLP",
-                classPackageSetting, classPackageParser_Package, new XC_MethodReplacement() {
-                    @Override
-                    protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                        XposedBridge.log(new Throwable());
-                        Log.d(TAG, "", new Throwable());
-                        return true;// PackageManager.SignatureMatch
-                    }
+        
+        //TODO: hook verifySignaturesLP to decrease the code we need to compare signatrue
+        if(DEBUG_VERIFY_SIGNATURES) {
+            XposedBridge.log("hook verifySignaturesLP");
+            XposedHelpers.findAndHookMethod(classPackageManagerService, "verifySignaturesLP",
+                    classPackageSetting, classPackageParser_Package, new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                            XposedBridge.log(new Throwable());
+                            Log.d(TAG, "", new Throwable());
+                            return true;// PackageManager.SignatureMatch
+                        }
 
-                });
-
+                    });
+        }
         /** Signatures end **/
     }
 }

@@ -1,11 +1,6 @@
 
 package org.x2ools;
 
-import java.io.File;
-
-import org.x2ools.contextsettings.ContextSettingsService;
-import org.x2ools.system.XPhoneStatusBar;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,6 +12,16 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.x2ools.contextsettings.ContextSettingsService;
+import org.x2ools.system.XPhoneStatusBar;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class X2oolsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener,
         OnPreferenceClickListener {
@@ -51,7 +56,7 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         addPreferencesFromResource(R.xml.preference);
         prefs = getPreferenceScreen().getSharedPreferences();
         getPreferenceScreen().setOnPreferenceClickListener(this);
-        initX2oolsPrefs();
+        initX2ools();
     }
 
     @Override
@@ -80,10 +85,28 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
         editor.commit();
     }
 
-    private void initX2oolsPrefs() {
+    private void initX2ools() {
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
-        if (isFirstRun || !new File(X2oolsApplication.X2OOLS_PREFS).exists()) {
+        if (isFirstRun) {
             prefs.edit().putBoolean("isFirstRun", false).commit();
+
+            try {
+                InputStream is = getAssets().open("chat_font.ttf");
+                OutputStream os = new FileOutputStream(X2oolsApplication.X2OOLS_DIR
+                        + "chat_font.ttf");
+                int bytesRead = 0;
+                byte[] buffer = new byte[8192];
+                while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                os.close();
+                is.close();
+            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
+            }
+        }
+
+        if (!new File(X2oolsApplication.X2OOLS_PREFS).exists()) {
             updateX2oolsPrefs();
         }
     }
@@ -110,7 +133,6 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             sendBroadcast(statusbarIntent);
         } else if (key.equals(KEY_PERMISSION_ALLOW)) {
             Toast.makeText(this, R.string.permission_work_after_reboot, Toast.LENGTH_LONG).show();
-            ;
         }
         updateX2oolsPrefs();
     }

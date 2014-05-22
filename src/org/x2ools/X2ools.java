@@ -1,5 +1,6 @@
 
 package org.x2ools;
+
 import org.x2ools.permission.Permissions;
 import org.x2ools.quicksettings.QuickSettings;
 import org.x2ools.superdebug.SuperDebug;

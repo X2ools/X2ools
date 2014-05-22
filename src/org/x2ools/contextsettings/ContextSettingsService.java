@@ -21,9 +21,13 @@ import android.view.WindowManager.LayoutParams;
 
 public class ContextSettingsService extends Service implements ContextSettingsView.CallBack {
     private static final String TAG = "ContextSettingsService";
+
     private ContextSettingsView mParentView;
+
     private WindowManager mWindowManager;
+
     public static String ACTION_CONTEXT_SETTINGS = "ACTION_CONTEXT_SETTINGS";
+
     public static String KEY_ENABLE = "enable";
 
     @Override
@@ -37,7 +41,7 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
     public void onCreate() {
         IntentFilter filter = new IntentFilter(ACTION_CONTEXT_SETTINGS);
         registerReceiver(mReceiver, filter);
-        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getBoolean(X2oolsActivity.KEY_CONTEXT_SETTINGS, true)) {
             addView();
@@ -53,21 +57,20 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
 
     public void addView() {
         if (mParentView == null || mLayoutParams == null) {
-            mParentView = (ContextSettingsView) LayoutInflater.from(this)
+            mParentView = (ContextSettingsView)LayoutInflater.from(this)
                     .inflate(R.layout.context_settings, null)
                     .findViewById(R.id.contextSettingsView);
             mParentView.setCallBack(this);
             mLayoutParams = new LayoutParams();
-            mLayoutParams.y = mWindowManager.getDefaultDisplay().getHeight()/2;
+            mLayoutParams.y = mWindowManager.getDefaultDisplay().getHeight() / 2;
             mLayoutParams.x = mWindowManager.getDefaultDisplay().getWidth();
             mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
             mLayoutParams.width = LayoutParams.WRAP_CONTENT;
             mLayoutParams.height = LayoutParams.WRAP_CONTENT;
             mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 
-            mLayoutParams.flags =
-                    LayoutParams.FLAG_NOT_TOUCH_MODAL
-                            | LayoutParams.FLAG_NOT_FOCUSABLE;
+            mLayoutParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | LayoutParams.FLAG_NOT_FOCUSABLE;
 
             mLayoutParams.format = PixelFormat.TRANSLUCENT;
         }
@@ -91,8 +94,7 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
             Log.d(TAG, "onReceive " + enable);
             if (enable) {
                 addView();
-            }
-            else {
+            } else {
                 removeView();
             }
         }
@@ -101,8 +103,8 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
 
     @Override
     public void onMoved(int dx, int dy) {
-        mLayoutParams.x = (int) dx;
-        mLayoutParams.y = (int) dy;
+        mLayoutParams.x = (int)dx;
+        mLayoutParams.y = (int)dy;
         Log.d(TAG, "updateViewLayout : " + mLayoutParams.x + " , " + mLayoutParams.y);
         mWindowManager.updateViewLayout(mParentView, mLayoutParams);
     }
@@ -114,8 +116,7 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
         if (FOCUSABLE_IN_EXPAND_MODE) {
             if (expand) {
                 mLayoutParams.flags &= ~LayoutParams.FLAG_NOT_FOCUSABLE;
-            }
-            else {
+            } else {
                 mLayoutParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             mWindowManager.updateViewLayout(mParentView, mLayoutParams);

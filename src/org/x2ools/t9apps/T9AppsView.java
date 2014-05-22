@@ -16,6 +16,7 @@ import org.x2ools.R;
 public class T9AppsView extends RelativeLayout {
 
     public static final boolean DEBUG = true;
+
     private static final String TAG = "T9AppsView";
 
     public T9AppsView(Context context, AttributeSet attrs) {
@@ -24,8 +25,11 @@ public class T9AppsView extends RelativeLayout {
     }
 
     private Context mContext;
+
     private TextView mFilterView;
+
     private AppsGridView mAppsGridView;
+
     private StringBuilder mFilterText = new StringBuilder();
 
     OnLongClickListener mOnLongClickListener = new OnLongClickListener() {
@@ -60,6 +64,7 @@ public class T9AppsView extends RelativeLayout {
         }
 
     };
+
     OnClickListener mOnClickListener = new OnClickListener() {
 
         @Override
@@ -148,8 +153,8 @@ public class T9AppsView extends RelativeLayout {
             findViewById(id).setOnLongClickListener(mOnLongClickListener);
         }
         setOnClickListener(mOnClickListener);
-        mAppsGridView = (AppsGridView) findViewById(R.id.appsList);
-        mFilterView = (TextView) findViewById(R.id.numFilter);
+        mAppsGridView = (AppsGridView)findViewById(R.id.appsList);
+        mFilterView = (TextView)findViewById(R.id.numFilter);
 
         super.onFinishInflate();
     }

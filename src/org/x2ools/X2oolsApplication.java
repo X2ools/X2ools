@@ -16,8 +16,9 @@ public class X2oolsApplication extends Application {
 
     // private static final String TAG = "X2oolsApplication";
     public static final String X2OOLS_DIR = Environment.getExternalStorageDirectory() + "/X2ools/";
-    public static final String X2OOLS_PREFS = Environment.getExternalStorageDirectory() + "/X2ools/"
-            + "prefs.json";
+
+    public static final String X2OOLS_PREFS = Environment.getExternalStorageDirectory()
+            + "/X2ools/" + "prefs.json";
 
     @Override
     public void onCreate() {

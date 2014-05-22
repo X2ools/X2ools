@@ -1,3 +1,4 @@
+
 package org.x2ools.quicksettings;
 
 import android.content.Context;
@@ -19,16 +20,27 @@ public abstract class AQuickSettingsTile implements OnClickListener {
     protected static final String PACKAGE_NAME = "com.android.systemui";
 
     protected Context mContext;
+
     protected Context mGbContext;
+
     protected FrameLayout mTile;
+
     protected OnClickListener mOnClick;
+
     protected OnLongClickListener mOnLongClick;
+
     protected Resources mResources;
+
     protected Resources mGbResources;
+
     protected Object mStatusBar;
+
     protected Object mPanelBar;
+
     protected Object mQuickSettings;
+
     protected ViewGroup mContainer;
+
     protected boolean mVisible;
 
     public AQuickSettingsTile(Context context, Context gbContext, Object statusBar, Object panelBar) {
@@ -40,11 +52,12 @@ public abstract class AQuickSettingsTile implements OnClickListener {
         mPanelBar = panelBar;
     }
 
-    public void setupQuickSettingsTile(ViewGroup viewGroup, LayoutInflater inflater, Object quickSettings) {
+    public void setupQuickSettingsTile(ViewGroup viewGroup, LayoutInflater inflater,
+            Object quickSettings) {
         mContainer = viewGroup;
         mQuickSettings = quickSettings;
         int layoutId = mResources.getIdentifier("quick_settings_tile", "layout", PACKAGE_NAME);
-        mTile = (FrameLayout) inflater.inflate(layoutId, viewGroup, false);
+        mTile = (FrameLayout)inflater.inflate(layoutId, viewGroup, false);
         onTileCreate();
         viewGroup.addView(mTile);
         updateResources();
@@ -72,7 +85,7 @@ public abstract class AQuickSettingsTile implements OnClickListener {
             mContainerView.removeView(mTile);
         }
         updateLayout(tl);
-        ((FrameLayout) mContainerView).requestLayout();
+        ((FrameLayout)mContainerView).requestLayout();
     }
 
     public void updateLayout(TileLayout tileLayout) {

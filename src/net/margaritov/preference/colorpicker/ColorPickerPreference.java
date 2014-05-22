@@ -35,18 +35,19 @@ import android.widget.LinearLayout;
  * 
  * @author Sergey Margaritov
  */
-public class ColorPickerPreference
-        extends
-        Preference
-        implements
-        Preference.OnPreferenceClickListener,
-        ColorPickerDialog.OnColorChangedListener {
+public class ColorPickerPreference extends Preference implements
+        Preference.OnPreferenceClickListener, ColorPickerDialog.OnColorChangedListener {
 
     View mView;
+
     ColorPickerDialog mDialog;
+
     private int mValue = Color.BLACK;
+
     private float mDensity = 0;
+
     private boolean mAlphaSliderEnabled = false;
+
     private boolean mHexValueEnabled = false;
 
     public ColorPickerPreference(Context context) {
@@ -71,7 +72,7 @@ public class ColorPickerPreference
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        onColorChanged(restoreValue ? getPersistedInt(mValue) : (Integer) defaultValue);
+        onColorChanged(restoreValue ? getPersistedInt(mValue) : (Integer)defaultValue);
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -94,17 +95,13 @@ public class ColorPickerPreference
         if (mView == null)
             return;
         ImageView iView = new ImageView(getContext());
-        LinearLayout widgetFrameView = ((LinearLayout) mView
-                .findViewById(android.R.id.widget_frame));
+        LinearLayout widgetFrameView = ((LinearLayout)mView.findViewById(android.R.id.widget_frame));
         if (widgetFrameView == null)
             return;
         widgetFrameView.setVisibility(View.VISIBLE);
-        widgetFrameView.setPadding(
-                widgetFrameView.getPaddingLeft(),
-                widgetFrameView.getPaddingTop(),
-                (int) (mDensity * 8),
-                widgetFrameView.getPaddingBottom()
-                );
+        widgetFrameView.setPadding(widgetFrameView.getPaddingLeft(),
+                widgetFrameView.getPaddingTop(), (int)(mDensity * 8),
+                widgetFrameView.getPaddingBottom());
         // remove already create preview image
         int count = widgetFrameView.getChildCount();
         if (count > 0) {
@@ -112,12 +109,12 @@ public class ColorPickerPreference
         }
         widgetFrameView.addView(iView);
         widgetFrameView.setMinimumWidth(0);
-        iView.setBackground(new AlphaPatternDrawable((int) (5 * mDensity)));
+        iView.setBackground(new AlphaPatternDrawable((int)(5 * mDensity)));
         iView.setImageBitmap(getPreviewBitmap());
     }
 
     private Bitmap getPreviewBitmap() {
-        int d = (int) (mDensity * 31); // 30dip
+        int d = (int)(mDensity * 31); // 30dip
         int color = mValue;
         Bitmap bm = Bitmap.createBitmap(d, d, Config.ARGB_8888);
         int w = bm.getWidth();
@@ -283,7 +280,7 @@ public class ColorPickerPreference
             return;
         }
 
-        SavedState myState = (SavedState) state;
+        SavedState myState = (SavedState)state;
         super.onRestoreInstanceState(myState.getSuperState());
         showDialog(myState.dialogBundle);
     }
@@ -307,15 +304,14 @@ public class ColorPickerPreference
         }
 
         @SuppressWarnings("unused")
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-                    public SavedState createFromParcel(Parcel in) {
-                        return new SavedState(in);
-                    }
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
 
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                };
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }

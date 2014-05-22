@@ -23,19 +23,29 @@ import org.x2ools.X2oolsSharedPreferences;
 public class QuickSettings {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
+
     private static final String CLASS_QUICK_SETTINGS = "com.android.systemui.statusbar.phone.QuickSettings";
+
     private static final String CLASS_PHONE_STATUSBAR = "com.android.systemui.statusbar.phone.PhoneStatusBar";
+
     private static final String CLASS_PANEL_BAR = "com.android.systemui.statusbar.phone.PanelBar";
 
     private static Context mContext;
+
     private static Context mX2oolContext;
+
     private static ViewGroup mContainerView;
+
     private static Object mPanelBar;
+
     private static Object mStatusBar;
+
     private static Object mQuickSettings;
 
     private static WechatScanTile scanTile;
+
     private static boolean canAddScanTile = false;
+
     private static X2oolsSharedPreferences x2ools_prefs;
 
     private static BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -60,8 +70,7 @@ public class QuickSettings {
         Class<?> phoneStatusBarClass = null;
         Class<?> panelBarClass = null;
         try {
-            quickSettingsClass = XposedHelpers.findClass(CLASS_QUICK_SETTINGS,
-                    lpparam.classLoader);
+            quickSettingsClass = XposedHelpers.findClass(CLASS_QUICK_SETTINGS, lpparam.classLoader);
             phoneStatusBarClass = XposedHelpers.findClass(CLASS_PHONE_STATUSBAR,
                     lpparam.classLoader);
             panelBarClass = XposedHelpers.findClass(CLASS_PANEL_BAR, lpparam.classLoader);
@@ -88,8 +97,7 @@ public class QuickSettings {
         }
         try {
             XposedHelpers.findAndHookMethod(quickSettingsClass, "addSystemTiles", ViewGroup.class,
-                    LayoutInflater.class,
-                    quickSettingsAddSystemTilesHook);
+                    LayoutInflater.class, quickSettingsAddSystemTilesHook);
         } catch (Throwable t) {
             XposedBridge.log(t);
         }
@@ -100,10 +108,10 @@ public class QuickSettings {
         @Override
         protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
             mQuickSettings = param.thisObject;
-            mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+            mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
             mX2oolContext = mContext.createPackageContext(X2oolsActivity.X2OOL_PACKAGE_NAME,
                     Context.CONTEXT_IGNORE_SECURITY);
-            mContainerView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject,
+            mContainerView = (ViewGroup)XposedHelpers.getObjectField(param.thisObject,
                     "mContainerView");
 
             IntentFilter filter = new IntentFilter();
@@ -130,7 +138,7 @@ public class QuickSettings {
         @Override
         protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 
-            LayoutInflater inflater = (LayoutInflater) param.args[1];
+            LayoutInflater inflater = (LayoutInflater)param.args[1];
 
             scanTile = new WechatScanTile(mContext, mX2oolContext, mStatusBar, mPanelBar);
             scanTile.setupQuickSettingsTile(mContainerView, inflater, mQuickSettings);
@@ -149,10 +157,15 @@ public class QuickSettings {
 
     public static class TileLayout {
         public int numColumns;
+
         public int textSize;
+
         public int imageSize;
+
         public int imageMarginTop;
+
         public int imageMarginBottom;
+
         public LabelStyle labelStyle;
 
         public enum LabelStyle {
@@ -167,11 +180,9 @@ public class QuickSettings {
             textSize = 12;
             try {
                 imageMarginTop = res.getDimensionPixelSize(res.getIdentifier(
-                        "qs_tile_margin_above_icon", "dimen",
-                        PACKAGE_NAME));
+                        "qs_tile_margin_above_icon", "dimen", PACKAGE_NAME));
                 imageMarginBottom = res.getDimensionPixelSize(res.getIdentifier(
-                        "qs_tile_margin_below_icon", "dimen",
-                        PACKAGE_NAME));
+                        "qs_tile_margin_below_icon", "dimen", PACKAGE_NAME));
                 imageSize = res.getDimensionPixelSize(res.getIdentifier("qs_tile_icon_size",
                         "dimen", PACKAGE_NAME));
             } catch (Resources.NotFoundException rnfe) {

@@ -17,14 +17,15 @@ import org.x2ools.X2oolsSharedPreferences;
 public class XRecents {
 
     public static final String PACKAGE_NAME = "com.android.systemui";
+
     private static Context mContext;
 
     public static void handleLoadPackage(LoadPackageParam lpparam) {
         if (!lpparam.packageName.equals(PACKAGE_NAME))
             return;
 
-        Class<?> Recents = XposedHelpers.findClass(
-                "com.android.systemui.recent.Recents", lpparam.classLoader);
+        Class<?> Recents = XposedHelpers.findClass("com.android.systemui.recent.Recents",
+                lpparam.classLoader);
 
         XposedHelpers.findAndHookMethod(Recents, "toggleRecents", Display.class, int.class,
                 View.class, toggleRecentsHook);
@@ -35,7 +36,7 @@ public class XRecents {
 
         @Override
         protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-            mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+            mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
             X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
             boolean t9_search = prefs.getBoolean(X2oolsActivity.KEY_T9_SEARCH, true);
             if (t9_search) {

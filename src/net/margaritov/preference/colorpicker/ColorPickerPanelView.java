@@ -44,15 +44,19 @@ public class ColorPickerPanelView extends View {
     private float mDensity = 1f;
 
     private int mBorderColor = 0xff6E6E6E;
+
     private int mColor = 0xff000000;
 
     private String mText = "";
 
     private Paint mBorderPaint;
+
     private Paint mColorPaint;
+
     private Paint mTextPaint;
 
     private RectF mDrawingRect;
+
     private RectF mColorRect;
 
     private AlphaPatternDrawable mAlphaPattern;
@@ -139,14 +143,10 @@ public class ColorPickerPanelView extends View {
 
         mColorRect = new RectF(left, top, right, bottom);
 
-        mAlphaPattern = new AlphaPatternDrawable((int) (5 * mDensity));
+        mAlphaPattern = new AlphaPatternDrawable((int)(5 * mDensity));
 
-        mAlphaPattern.setBounds(
-                Math.round(mColorRect.left),
-                Math.round(mColorRect.top),
-                Math.round(mColorRect.right),
-                Math.round(mColorRect.bottom)
-                );
+        mAlphaPattern.setBounds(Math.round(mColorRect.left), Math.round(mColorRect.top),
+                Math.round(mColorRect.right), Math.round(mColorRect.bottom));
 
     }
 

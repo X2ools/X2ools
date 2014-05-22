@@ -26,33 +26,46 @@ import java.lang.reflect.Field;
 
 public class ContextSettingsView extends FrameLayout {
     public static final int MESSAGE_UPDATE_VIEW = 0;
+
     public static final int MESSAGE_SHOW_BIG = 1;
+
     public static final int MESSAGE_SHOW_SMALL = 2;
 
     private static final String TAG = "ContextSettingsView";
+
     private TextView mTextCurrentPackage;
+
     private Button mButtonSettings;
+
     private View mX2ools;
+
     private View mLayoutSmall;
+
     private View mLayoutBig;
+
     private View mToggleAdb;
+
     private Context mContext;
+
     private CallBack mCallBack;
+
     public static final int DELAY_MILLS = 1000;
+
     private ActivityManager mAm;
+
     private PackageManager mPm;
 
     public ContextSettingsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = getContext();
-        mAm = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        mAm = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
         mPm = mContext.getPackageManager();
     }
 
     @Override
     protected void onFinishInflate() {
-        mTextCurrentPackage = (TextView) findViewById(R.id.currentPackage);
-        mButtonSettings = (Button) findViewById(R.id.gotoSettings);
+        mTextCurrentPackage = (TextView)findViewById(R.id.currentPackage);
+        mButtonSettings = (Button)findViewById(R.id.gotoSettings);
         mLayoutSmall = findViewById(R.id.layoutSmall);
         mLayoutBig = findViewById(R.id.layoutBig);
         mX2ools = findViewById(R.id.x2ools);
@@ -61,11 +74,17 @@ public class ContextSettingsView extends FrameLayout {
     }
 
     private boolean mMoved;
+
     private float mStartX;
+
     private float mStartY;
+
     private float mEndX;
+
     private float mEndY;
+
     private float mTouchX;
+
     private float mTouchY;
 
     public void setCallBack(CallBack callBack) {
@@ -90,7 +109,7 @@ public class ContextSettingsView extends FrameLayout {
                 mEndY = motionEvent.getY();
                 if (Math.abs(mEndX - mStartX) > 5 || Math.abs(mEndY - mStartY) > 5) {
                     mMoved = true;
-                    mCallBack.onMoved((int) (mTouchX - mStartX), (int) (mTouchY - mStartY));
+                    mCallBack.onMoved((int)(mTouchX - mStartX), (int)(mTouchY - mStartY));
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -98,8 +117,7 @@ public class ContextSettingsView extends FrameLayout {
                     Log.d(TAG, "not Moved");
                     if (mLayoutSmall.getVisibility() == View.VISIBLE) {
                         showBig();
-                    }
-                    else {
+                    } else {
                         showSmall();
                     }
                 }
@@ -166,13 +184,11 @@ public class ContextSettingsView extends FrameLayout {
                         new SettingsMocker(mContext, null).toggleAdb();
                     }
                 }.start();
-            }
-            else if (v == mX2ools) {
+            } else if (v == mX2ools) {
                 Intent i = mPm.getLaunchIntentForPackage("org.x2ools");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(i);
-            }
-            else if (v == mButtonSettings) {
+            } else if (v == mButtonSettings) {
                 final String currentPackage = getRunningPackage().toString();
                 final String applicationName = getApplicationName(currentPackage);
                 mTextCurrentPackage.setText(currentPackage + "\n" + applicationName);
@@ -191,7 +207,7 @@ public class ContextSettingsView extends FrameLayout {
 
     private String getApplicationName(final String packageName) {
         try {
-            return (String) mPm.getApplicationLabel(mPm.getApplicationInfo(packageName, 0));
+            return (String)mPm.getApplicationLabel(mPm.getApplicationInfo(packageName, 0));
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }

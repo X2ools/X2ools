@@ -20,7 +20,7 @@ public class ToPinYinUtils {
     public static List<String> getPinyinList(List<String> list) {
         List<String> pinyinList = new ArrayList<String>();
         for (Iterator<String> i = list.iterator(); i.hasNext();) {
-            String str = (String) i.next();
+            String str = (String)i.next();
             try {
                 String pinyin = getPinYin(str);
                 pinyinList.add(pinyin);
@@ -31,8 +31,7 @@ public class ToPinYinUtils {
         return pinyinList;
     }
 
-    public static String getPinYin(String zhongwen)
-            throws BadHanyuPinyinOutputFormatCombination {
+    public static String getPinYin(String zhongwen) throws BadHanyuPinyinOutputFormatCombination {
 
         String zhongWenPinYin = "";
         char[] chars = zhongwen.toCharArray();
@@ -66,17 +65,17 @@ public class ToPinYinUtils {
                 for (int i = 0; i < len; i++) {
                     String tmp = name.substring(i);
                     char c = tmp.charAt(0);
-                    if(c <= '9' && c>= '0') {
+                    if (c <= '9' && c >= '0') {
                         sb.append(c);
                     } else {
-                        if(full) {
+                        if (full) {
                             String pinyin = ToPinYinUtils.getPinYin(tmp).toLowerCase();
-                            for(int j=0;j<pinyin.length();j++) {
+                            for (int j = 0; j < pinyin.length(); j++) {
                                 sb.append(getOneNumFromAlpha(pinyin.charAt(j)));
                             }
                         } else {
-                            sb.append(getOneNumFromAlpha(ToPinYinUtils.getPinYin(tmp)
-                                    .toLowerCase().charAt(0)));
+                            sb.append(getOneNumFromAlpha(ToPinYinUtils.getPinYin(tmp).toLowerCase()
+                                    .charAt(0)));
                         }
                     }
                 }

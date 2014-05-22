@@ -36,16 +36,24 @@ public class T9Search {
 
     // List sort modes
     private static final boolean DEBUG = false;
+
     private static final String TAG = "T9Search";
 
     // Local variables
     private Context mContext;
+
     private ArrayList<ApplicationItem> mNameResults = new ArrayList<ApplicationItem>();
+
     private Set<ApplicationItem> mAllResults = new LinkedHashSet<ApplicationItem>();
+
     private ArrayList<ApplicationItem> mApps = new ArrayList<ApplicationItem>();
+
     private String mPrevInput;
+
     private PackageManager mPackageManager;
+
     private List<ApplicationInfo> mApplications;
+
     private static char[][] sT9Map;
 
     public T9Search(Context context) {
@@ -93,11 +101,17 @@ public class T9Search {
 
     public static class ApplicationItem {
         public String name;
+
         public String pinyinNum;
+
         public String fullpinyinNum;
+
         public String packageName;
+
         public int taskId;
+
         public Intent baseIntent;
+
         public Drawable drawable;
     }
 

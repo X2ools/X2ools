@@ -1,3 +1,4 @@
+
 package org.x2ools.quicksettings;
 
 import android.content.Context;
@@ -16,8 +17,11 @@ import org.x2ools.quicksettings.QuickSettings.TileLayout;
 public abstract class BasicTile extends AQuickSettingsTile {
 
     protected ImageView mImageView;
+
     protected TextView mTextView;
+
     protected int mDrawableId;
+
     protected String mLabel;
 
     public BasicTile(Context context, Context gbContext, Object statusBar, Object panelBar) {
@@ -41,8 +45,8 @@ public abstract class BasicTile extends AQuickSettingsTile {
     protected void onTileCreate() {
         LayoutInflater inflater = LayoutInflater.from(mGbContext);
         inflater.inflate(onGetLayoutId(), mTile);
-        mImageView = (ImageView) mTile.findViewById(onGetImageViewId());
-        mTextView = (TextView) mTile.findViewById(onGetTextViewId());
+        mImageView = (ImageView)mTile.findViewById(onGetImageViewId());
+        mTextView = (TextView)mTile.findViewById(onGetTextViewId());
     }
 
     @Override
@@ -55,9 +59,10 @@ public abstract class BasicTile extends AQuickSettingsTile {
     protected void onLayoutUpdated(TileLayout tileLayout) {
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tileLayout.textSize);
         mTextView.setAllCaps(tileLayout.labelStyle == TileLayout.LabelStyle.ALLCAPS);
-        mTextView.setVisibility(tileLayout.labelStyle == TileLayout.LabelStyle.HIDDEN ?
-                View.GONE : View.VISIBLE);
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mImageView.getLayoutParams();
+        mTextView.setVisibility(tileLayout.labelStyle == TileLayout.LabelStyle.HIDDEN ? View.GONE
+                : View.VISIBLE);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)mImageView
+                .getLayoutParams();
         lp.width = lp.height = tileLayout.imageSize;
         lp.topMargin = tileLayout.imageMarginTop;
         lp.bottomMargin = tileLayout.imageMarginBottom;

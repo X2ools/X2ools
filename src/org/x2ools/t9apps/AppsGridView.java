@@ -34,16 +34,27 @@ import java.util.List;
 
 public class AppsGridView extends GridView {
     private AppsAdapter mAppsAdapter;
+
     private static final String TAG = "AppsGridView";
+
     private static final boolean DEBUG = false;
+
     protected static final int MSG_SEARCH_INITED = 0;
+
     private Context mContext;
+
     private static T9Search sT9Search;
+
     private ArrayList<ApplicationItem> apps;
+
     private PackageManager mPackageManager;
+
     private ActivityManager mActivityManager;
+
     private LayoutInflater mLayoutInflater;
+
     private String mFilterStr = null;
+
     private Handler mHandler = new Handler() {
 
         @Override
@@ -65,7 +76,7 @@ public class AppsGridView extends GridView {
         super(context, attrs);
         mContext = context;
         mPackageManager = context.getPackageManager();
-        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        mActivityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
         mLayoutInflater = LayoutInflater.from(context);
         // sT9Search = new T9Search(context);
         setApplicationsData();
@@ -158,13 +169,13 @@ public class AppsGridView extends GridView {
                             added = true;
                     }
                     if (!added) {
-                        
+
                         if ((recentInfo.baseIntent != null)
                                 && ((recentInfo.baseIntent.getFlags() & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS) != 0)) {
                             Log.d(TAG, "This task has flag = FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS");
                             continue;
                         }
-                        
+
                         ApplicationItem item = new ApplicationItem();
                         item.name = info.loadLabel(mPackageManager).toString();
                         item.packageName = info.packageName;
@@ -191,10 +202,10 @@ public class AppsGridView extends GridView {
             Log.d(TAG, "This task has flag = FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS");
             return true;
         }
-        final ActivityManager am = (ActivityManager)
-                mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        final List<ActivityManager.RecentTaskInfo> recentTasks =
-                am.getRecentTasks(20, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
+        final ActivityManager am = (ActivityManager)mContext
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RecentTaskInfo> recentTasks = am.getRecentTasks(20,
+                ActivityManager.RECENT_IGNORE_UNAVAILABLE);
 
         for (int i = 0; i < recentTasks.size(); ++i) {
             final ActivityManager.RecentTaskInfo info = recentTasks.get(i);
@@ -234,20 +245,17 @@ public class AppsGridView extends GridView {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
-            final ApplicationItem item = (ApplicationItem) getItem(position);
+            final ApplicationItem item = (ApplicationItem)getItem(position);
             if (convertView == null) {
-                convertView = mLayoutInflater.inflate(R.layout.package_item,
-                        null);
+                convertView = mLayoutInflater.inflate(R.layout.package_item, null);
                 viewHolder = new ViewHolder();
 
-                viewHolder.textTitle = (TextView) convertView
-                        .findViewById(R.id.textTitle);
-                viewHolder.icon = (ImageView) convertView
-                        .findViewById(R.id.icon);
+                viewHolder.textTitle = (TextView)convertView.findViewById(R.id.textTitle);
+                viewHolder.icon = (ImageView)convertView.findViewById(R.id.icon);
                 convertView.setTag(viewHolder);
 
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (ViewHolder)convertView.getTag();
             }
 
             convertView.setOnClickListener(new OnClickListener() {
@@ -261,34 +269,27 @@ public class AppsGridView extends GridView {
                     } else if (item.baseIntent != null) {
                         Intent intent = item.baseIntent;
                         intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
-                                | Intent.FLAG_ACTIVITY_TASK_ON_HOME
-                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                | Intent.FLAG_ACTIVITY_TASK_ON_HOME | Intent.FLAG_ACTIVITY_NEW_TASK);
                         Log.v(TAG, "Starting activity " + intent);
                         try {
                             mContext.startActivity(intent);
                         } catch (SecurityException e) {
                             Log.e(TAG, "Recents does not have the permission to launch " + intent,
                                     e);
-                            mContext.startActivity(
-                                    mPackageManager.getLaunchIntentForPackage(
-                                            item.packageName).addFlags(
-                                            Intent.FLAG_ACTIVITY_NEW_TASK));
+                            mContext.startActivity(mPackageManager.getLaunchIntentForPackage(
+                                    item.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         } catch (ActivityNotFoundException e) {
                             Log.e(TAG, "Error launching activity " + intent, e);
-                            mContext.startActivity(
-                                    mPackageManager.getLaunchIntentForPackage(
-                                            item.packageName).addFlags(
-                                            Intent.FLAG_ACTIVITY_NEW_TASK));
+                            mContext.startActivity(mPackageManager.getLaunchIntentForPackage(
+                                    item.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
 
                     } else {
-                        mContext.startActivity(
-                                mPackageManager.getLaunchIntentForPackage(
-                                        item.packageName).addFlags(
-                                        Intent.FLAG_ACTIVITY_NEW_TASK));
+                        mContext.startActivity(mPackageManager.getLaunchIntentForPackage(
+                                item.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
-                    
-                    ((Activity) mContext).finish();
+
+                    ((Activity)mContext).finish();
 
                 }
 
@@ -304,7 +305,7 @@ public class AppsGridView extends GridView {
                     i.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
                     i.setData(Uri.parse("package:" + item.packageName));
                     mContext.startActivity(i);
-                    ((Activity) mContext).finish();
+                    ((Activity)mContext).finish();
                     return true;
                 }
 
@@ -317,6 +318,7 @@ public class AppsGridView extends GridView {
 
     static class ViewHolder {
         TextView textTitle;
+
         ImageView icon;
     }
 }

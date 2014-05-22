@@ -17,15 +17,18 @@ import java.util.Set;
 
 /**
  * This class is basically the same as SharedPreferencesImpl from AOSP. You can
- * read and write by any app, but maybe slowly and without listeners support.
- * Do not write x2ools preference values in another app, create your own key if
- * you want use X2oolsSharedPreferences.
+ * read and write by any app, but maybe slowly and without listeners support. Do
+ * not write x2ools preference values in another app, create your own key if you
+ * want use X2oolsSharedPreferences.
  */
 public class X2oolsSharedPreferences implements SharedPreferences {
 
     private File mFile;
+
     private boolean mLoaded;
+
     private boolean mSaved;
+
     private JSONObject json;
 
     public X2oolsSharedPreferences() {
@@ -158,7 +161,7 @@ public class X2oolsSharedPreferences implements SharedPreferences {
         synchronized (this) {
             awaitLoadedLocked();
             try {
-                return (float) json.getDouble(key);
+                return (float)json.getDouble(key);
             } catch (JSONException e) {
                 return defValue;
             }

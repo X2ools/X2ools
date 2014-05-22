@@ -1,3 +1,4 @@
+
 package org.x2ools;
 
 import java.util.List;
@@ -22,26 +23,27 @@ public class Utils {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup) v;
+            ViewGroup vg = (ViewGroup)v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsByClass(vg.getChildAt(i), className, result);
             }
         }
     }
-    
+
     public static void findViewsById(View v, int id, List<View> result) {
-        if(v.getId() == id) {
+        if (v.getId() == id) {
             result.add(v);
         }
-        if(v instanceof ViewGroup) {
+        if (v instanceof ViewGroup) {
             ViewGroup vg = (ViewGroup)v;
-            for(int i = 0; i < vg.getChildCount(); i++) {
+            for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsById(vg.getChildAt(i), id, result);
             }
         }
     }
 
-    public static int getMainColorFromActionBarDrawable(Drawable drawable) throws IllegalArgumentException {
+    public static int getMainColorFromActionBarDrawable(Drawable drawable)
+            throws IllegalArgumentException {
         /*
          * This should fix the bug where a huge part of the ActionBar background
          * is drawn white.
@@ -49,7 +51,7 @@ public class Utils {
         Drawable copyDrawable = drawable.getConstantState().newDrawable();
 
         if (copyDrawable instanceof ColorDrawable) {
-            return ((ColorDrawable) drawable).getColor();
+            return ((ColorDrawable)drawable).getColor();
         }
 
         Bitmap bitmap = drawableToBitmap(copyDrawable);
@@ -62,7 +64,8 @@ public class Utils {
         return Color.argb(alpha, red, green, blue);
     }
 
-    public static int getMainColorFromActionBarBitmap(Bitmap bitmap) throws IllegalArgumentException {
+    public static int getMainColorFromActionBarBitmap(Bitmap bitmap)
+            throws IllegalArgumentException {
 
         int pixel = bitmap.getPixel(bitmap.getWidth() / 2, bitmap.getHeight() / 2);
         int red = Color.red(pixel);
@@ -74,12 +77,13 @@ public class Utils {
 
     public static Bitmap drawableToBitmap(Drawable drawable) throws IllegalArgumentException {
         if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
+            return ((BitmapDrawable)drawable).getBitmap();
         }
         Bitmap bitmap;
 
         try {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(), Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
@@ -101,10 +105,10 @@ public class Utils {
 
         return bitmap;
     }
-    
+
     @SuppressLint("NewApi")
     public static boolean isKeyguardLocked(Context context) {
-        KeyguardManager kgm = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager kgm = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
         boolean keyguardLocked;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {

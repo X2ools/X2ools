@@ -33,7 +33,7 @@ public class XActionBarContainer {
             X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
             int tintColor = prefs.getInt(X2oolsActivity.KEY_STATUS_COLOR, Color.TRANSPARENT);
             if (tintColor == Color.TRANSPARENT) {
-                Activity activity = (Activity)((View)param.thisObject).getContext();
+                Activity activity = (Activity) ((View) param.thisObject).getContext();
                 XPhoneStatusBar.changeColorAuto(activity, true);
             }
         }

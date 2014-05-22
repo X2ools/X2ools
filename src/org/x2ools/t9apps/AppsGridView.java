@@ -76,7 +76,7 @@ public class AppsGridView extends GridView {
         super(context, attrs);
         mContext = context;
         mPackageManager = context.getPackageManager();
-        mActivityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         mLayoutInflater = LayoutInflater.from(context);
         // sT9Search = new T9Search(context);
         setApplicationsData();
@@ -202,7 +202,7 @@ public class AppsGridView extends GridView {
             Log.d(TAG, "This task has flag = FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS");
             return true;
         }
-        final ActivityManager am = (ActivityManager)mContext
+        final ActivityManager am = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
         final List<ActivityManager.RecentTaskInfo> recentTasks = am.getRecentTasks(20,
                 ActivityManager.RECENT_IGNORE_UNAVAILABLE);
@@ -245,17 +245,17 @@ public class AppsGridView extends GridView {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
-            final ApplicationItem item = (ApplicationItem)getItem(position);
+            final ApplicationItem item = (ApplicationItem) getItem(position);
             if (convertView == null) {
                 convertView = mLayoutInflater.inflate(R.layout.package_item, null);
                 viewHolder = new ViewHolder();
 
-                viewHolder.textTitle = (TextView)convertView.findViewById(R.id.textTitle);
-                viewHolder.icon = (ImageView)convertView.findViewById(R.id.icon);
+                viewHolder.textTitle = (TextView) convertView.findViewById(R.id.textTitle);
+                viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
                 convertView.setTag(viewHolder);
 
             } else {
-                viewHolder = (ViewHolder)convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
             convertView.setOnClickListener(new OnClickListener() {
@@ -289,7 +289,7 @@ public class AppsGridView extends GridView {
                                 item.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
 
-                    ((Activity)mContext).finish();
+                    ((Activity) mContext).finish();
 
                 }
 
@@ -305,7 +305,7 @@ public class AppsGridView extends GridView {
                     i.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
                     i.setData(Uri.parse("package:" + item.packageName));
                     mContext.startActivity(i);
-                    ((Activity)mContext).finish();
+                    ((Activity) mContext).finish();
                     return true;
                 }
 

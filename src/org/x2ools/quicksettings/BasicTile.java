@@ -45,8 +45,8 @@ public abstract class BasicTile extends AQuickSettingsTile {
     protected void onTileCreate() {
         LayoutInflater inflater = LayoutInflater.from(mGbContext);
         inflater.inflate(onGetLayoutId(), mTile);
-        mImageView = (ImageView)mTile.findViewById(onGetImageViewId());
-        mTextView = (TextView)mTile.findViewById(onGetTextViewId());
+        mImageView = (ImageView) mTile.findViewById(onGetImageViewId());
+        mTextView = (TextView) mTile.findViewById(onGetTextViewId());
     }
 
     @Override
@@ -61,7 +61,7 @@ public abstract class BasicTile extends AQuickSettingsTile {
         mTextView.setAllCaps(tileLayout.labelStyle == TileLayout.LabelStyle.ALLCAPS);
         mTextView.setVisibility(tileLayout.labelStyle == TileLayout.LabelStyle.HIDDEN ? View.GONE
                 : View.VISIBLE);
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)mImageView
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mImageView
                 .getLayoutParams();
         lp.width = lp.height = tileLayout.imageSize;
         lp.topMargin = tileLayout.imageMarginTop;

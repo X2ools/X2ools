@@ -66,7 +66,8 @@ public class ViewDumper {
                             dumpView.setAccessible(true);
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
                                     System.out, "utf-8"), 32 * 1024);
-                            dumpView.invoke(ViewDebug.class, context, (ViewGroup)toDump, writer, 0,
+                            dumpView.invoke(ViewDebug.class, context, (ViewGroup) toDump, writer,
+                                    0,
                                     skip, prop);
                             writer.flush();
                             writer.close();
@@ -94,7 +95,7 @@ public class ViewDumper {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsByClass(vg.getChildAt(i), className, result);
             }
@@ -106,7 +107,7 @@ public class ViewDumper {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsById(vg.getChildAt(i), id, result);
             }
@@ -122,7 +123,7 @@ public class ViewDumper {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsByTag(vg.getChildAt(i), tag, result);
             }

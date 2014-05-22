@@ -161,7 +161,7 @@ public class X2oolsSharedPreferences implements SharedPreferences {
         synchronized (this) {
             awaitLoadedLocked();
             try {
-                return (float)json.getDouble(key);
+                return (float) json.getDouble(key);
             } catch (JSONException e) {
                 return defValue;
             }

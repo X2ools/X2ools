@@ -58,14 +58,14 @@ public class ContextSettingsView extends FrameLayout {
     public ContextSettingsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = getContext();
-        mAm = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        mAm = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         mPm = mContext.getPackageManager();
     }
 
     @Override
     protected void onFinishInflate() {
-        mTextCurrentPackage = (TextView)findViewById(R.id.currentPackage);
-        mButtonSettings = (Button)findViewById(R.id.gotoSettings);
+        mTextCurrentPackage = (TextView) findViewById(R.id.currentPackage);
+        mButtonSettings = (Button) findViewById(R.id.gotoSettings);
         mLayoutSmall = findViewById(R.id.layoutSmall);
         mLayoutBig = findViewById(R.id.layoutBig);
         mX2ools = findViewById(R.id.x2ools);
@@ -109,7 +109,7 @@ public class ContextSettingsView extends FrameLayout {
                 mEndY = motionEvent.getY();
                 if (Math.abs(mEndX - mStartX) > 5 || Math.abs(mEndY - mStartY) > 5) {
                     mMoved = true;
-                    mCallBack.onMoved((int)(mTouchX - mStartX), (int)(mTouchY - mStartY));
+                    mCallBack.onMoved((int) (mTouchX - mStartX), (int) (mTouchY - mStartY));
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -207,7 +207,7 @@ public class ContextSettingsView extends FrameLayout {
 
     private String getApplicationName(final String packageName) {
         try {
-            return (String)mPm.getApplicationLabel(mPm.getApplicationInfo(packageName, 0));
+            return (String) mPm.getApplicationLabel(mPm.getApplicationInfo(packageName, 0));
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }

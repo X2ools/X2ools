@@ -52,8 +52,8 @@ public class ContextSettings {
 
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        final View dectorView = (View)param.thisObject;
-                        final boolean hasFocus = (Boolean)param.args[0];
+                        final View dectorView = (View) param.thisObject;
+                        final boolean hasFocus = (Boolean) param.args[0];
                         if (hasFocus) {
                             sFocusedWindowView = new WeakReference<View>(dectorView);
                             Log.d(TAG, "currentDectorView : " + sFocusedWindowView);

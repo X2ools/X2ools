@@ -57,7 +57,7 @@ public abstract class AQuickSettingsTile implements OnClickListener {
         mContainer = viewGroup;
         mQuickSettings = quickSettings;
         int layoutId = mResources.getIdentifier("quick_settings_tile", "layout", PACKAGE_NAME);
-        mTile = (FrameLayout)inflater.inflate(layoutId, viewGroup, false);
+        mTile = (FrameLayout) inflater.inflate(layoutId, viewGroup, false);
         onTileCreate();
         viewGroup.addView(mTile);
         updateResources();
@@ -85,7 +85,7 @@ public abstract class AQuickSettingsTile implements OnClickListener {
             mContainerView.removeView(mTile);
         }
         updateLayout(tl);
-        ((FrameLayout)mContainerView).requestLayout();
+        ((FrameLayout) mContainerView).requestLayout();
     }
 
     public void updateLayout(TileLayout tileLayout) {

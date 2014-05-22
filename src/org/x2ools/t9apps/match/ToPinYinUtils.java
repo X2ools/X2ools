@@ -20,7 +20,7 @@ public class ToPinYinUtils {
     public static List<String> getPinyinList(List<String> list) {
         List<String> pinyinList = new ArrayList<String>();
         for (Iterator<String> i = list.iterator(); i.hasNext();) {
-            String str = (String)i.next();
+            String str = (String) i.next();
             try {
                 String pinyin = getPinYin(str);
                 pinyinList.add(pinyin);

@@ -37,7 +37,7 @@ public class XActivity {
 
         @Override
         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-            Activity activity = (Activity)param.thisObject;
+            Activity activity = (Activity) param.thisObject;
 
             X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
             int tintColor = prefs.getInt(X2oolsActivity.KEY_STATUS_COLOR, Color.TRANSPARENT);

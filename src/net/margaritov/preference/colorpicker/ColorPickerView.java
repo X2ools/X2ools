@@ -365,8 +365,8 @@ public class ColorPickerView extends View {
 
         Point p = new Point();
 
-        p.y = (int)(height - (hue * height / 360f) + rect.top);
-        p.x = (int)rect.left;
+        p.y = (int) (height - (hue * height / 360f) + rect.top);
+        p.x = (int) rect.left;
 
         return p;
     }
@@ -379,8 +379,8 @@ public class ColorPickerView extends View {
 
         Point p = new Point();
 
-        p.x = (int)(sat * width + rect.left);
-        p.y = (int)((1f - val) * height + rect.top);
+        p.x = (int) (sat * width + rect.left);
+        p.y = (int) ((1f - val) * height + rect.top);
 
         return p;
     }
@@ -392,8 +392,8 @@ public class ColorPickerView extends View {
 
         Point p = new Point();
 
-        p.x = (int)(width - (alpha * width / 0xff) + rect.left);
-        p.y = (int)rect.top;
+        p.x = (int) (width - (alpha * width / 0xff) + rect.left);
+        p.y = (int) rect.top;
 
         return p;
 
@@ -449,14 +449,14 @@ public class ColorPickerView extends View {
     private int pointToAlpha(int x) {
 
         final RectF rect = mAlphaRect;
-        final int width = (int)rect.width();
+        final int width = (int) rect.width();
 
         if (x < rect.left) {
             x = 0;
         } else if (x > rect.right) {
             x = width;
         } else {
-            x = x - (int)rect.left;
+            x = x - (int) rect.left;
         }
 
         return 0xff - (x * 0xff / width);
@@ -524,7 +524,7 @@ public class ColorPickerView extends View {
                         update = false;
                     } else {
 
-                        int alpha = (int)(mAlpha - x * 10);
+                        int alpha = (int) (mAlpha - x * 10);
 
                         if (alpha < 0) {
                             alpha = 0;
@@ -566,7 +566,7 @@ public class ColorPickerView extends View {
 
             case MotionEvent.ACTION_DOWN:
 
-                mStartTouchPoint = new Point((int)event.getX(), (int)event.getY());
+                mStartTouchPoint = new Point((int) event.getX(), (int) event.getY());
 
                 update = moveTrackersIfNeeded(event);
 
@@ -633,7 +633,7 @@ public class ColorPickerView extends View {
 
             mLastTouchedPanel = PANEL_ALPHA;
 
-            mAlpha = pointToAlpha((int)event.getX());
+            mAlpha = pointToAlpha((int) event.getX());
 
             update = true;
         }
@@ -658,23 +658,23 @@ public class ColorPickerView extends View {
 
         if (!mShowAlphaPanel) {
 
-            height = (int)(widthAllowed - PANEL_SPACING - HUE_PANEL_WIDTH);
+            height = (int) (widthAllowed - PANEL_SPACING - HUE_PANEL_WIDTH);
 
             // If calculated height (based on the width) is more than the
             // allowed height.
             if (height > heightAllowed || getTag().equals("landscape")) {
                 height = heightAllowed;
-                width = (int)(height + PANEL_SPACING + HUE_PANEL_WIDTH);
+                width = (int) (height + PANEL_SPACING + HUE_PANEL_WIDTH);
             } else {
                 width = widthAllowed;
             }
         } else {
 
-            width = (int)(heightAllowed - ALPHA_PANEL_HEIGHT + HUE_PANEL_WIDTH);
+            width = (int) (heightAllowed - ALPHA_PANEL_HEIGHT + HUE_PANEL_WIDTH);
 
             if (width > widthAllowed) {
                 width = widthAllowed;
-                height = (int)(widthAllowed - HUE_PANEL_WIDTH + ALPHA_PANEL_HEIGHT);
+                height = (int) (widthAllowed - HUE_PANEL_WIDTH + ALPHA_PANEL_HEIGHT);
             } else {
                 height = heightAllowed;
             }
@@ -708,13 +708,13 @@ public class ColorPickerView extends View {
             width -= (PANEL_SPACING + ALPHA_PANEL_HEIGHT);
         }
 
-        return (int)(width + HUE_PANEL_WIDTH + PANEL_SPACING);
+        return (int) (width + HUE_PANEL_WIDTH + PANEL_SPACING);
 
     }
 
     private int getPrefferedHeight() {
 
-        int height = (int)(200 * mDensity);
+        int height = (int) (200 * mDensity);
 
         if (mShowAlphaPanel) {
             height += PANEL_SPACING + ALPHA_PANEL_HEIGHT;
@@ -781,7 +781,7 @@ public class ColorPickerView extends View {
 
         mAlphaRect = new RectF(left, top, right, bottom);
 
-        mAlphaPattern = new AlphaPatternDrawable((int)(5 * mDensity));
+        mAlphaPattern = new AlphaPatternDrawable((int) (5 * mDensity));
         mAlphaPattern.setBounds(Math.round(mAlphaRect.left), Math.round(mAlphaRect.top),
                 Math.round(mAlphaRect.right), Math.round(mAlphaRect.bottom));
 

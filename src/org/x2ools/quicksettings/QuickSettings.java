@@ -108,10 +108,10 @@ public class QuickSettings {
         @Override
         protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
             mQuickSettings = param.thisObject;
-            mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+            mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             mX2oolContext = mContext.createPackageContext(X2oolsActivity.X2OOL_PACKAGE_NAME,
                     Context.CONTEXT_IGNORE_SECURITY);
-            mContainerView = (ViewGroup)XposedHelpers.getObjectField(param.thisObject,
+            mContainerView = (ViewGroup) XposedHelpers.getObjectField(param.thisObject,
                     "mContainerView");
 
             IntentFilter filter = new IntentFilter();
@@ -138,7 +138,7 @@ public class QuickSettings {
         @Override
         protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 
-            LayoutInflater inflater = (LayoutInflater)param.args[1];
+            LayoutInflater inflater = (LayoutInflater) param.args[1];
 
             scanTile = new WechatScanTile(mContext, mX2oolContext, mStatusBar, mPanelBar);
             scanTile.setupQuickSettingsTile(mContainerView, inflater, mQuickSettings);

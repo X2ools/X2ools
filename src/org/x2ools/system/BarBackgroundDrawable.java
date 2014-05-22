@@ -140,13 +140,13 @@ public class BarBackgroundDrawable extends Drawable {
                 mColor = targetColor;
                 mGradientAlpha = targetGradientAlpha;
             } else {
-                final float t = (now - mStartTime) / (float)(mEndTime - mStartTime);
+                final float t = (now - mStartTime) / (float) (mEndTime - mStartTime);
                 final float v = Math.max(0, Math.min(mInterpolator.getInterpolation(t), 1));
-                mGradientAlpha = (int)(v * targetGradientAlpha + mGradientAlphaStart * (1 - v));
-                mColor = Color.argb((int)(v * Color.alpha(targetColor) + Color.alpha(mColorStart)
-                        * (1 - v)), (int)(v * Color.red(targetColor) + Color.red(mColorStart)
-                        * (1 - v)), (int)(v * Color.green(targetColor) + Color.green(mColorStart)
-                        * (1 - v)), (int)(v * Color.blue(targetColor) + Color.blue(mColorStart)
+                mGradientAlpha = (int) (v * targetGradientAlpha + mGradientAlphaStart * (1 - v));
+                mColor = Color.argb((int) (v * Color.alpha(targetColor) + Color.alpha(mColorStart)
+                        * (1 - v)), (int) (v * Color.red(targetColor) + Color.red(mColorStart)
+                        * (1 - v)), (int) (v * Color.green(targetColor) + Color.green(mColorStart)
+                        * (1 - v)), (int) (v * Color.blue(targetColor) + Color.blue(mColorStart)
                         * (1 - v)));
             }
         }

@@ -96,12 +96,13 @@ public class XPhoneStatusBar {
         @Override
         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
             try {
-                sNavigationBarView = (View)XposedHelpers.getObjectField(param.thisObject,
+                sNavigationBarView = (View) XposedHelpers.getObjectField(param.thisObject,
                         "mNavigationBarView");
             } catch (NoSuchFieldError e) {
             }
-            sStatusBarView = (View)XposedHelpers.getObjectField(param.thisObject, "mStatusBarView");
-            Context context = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+            sStatusBarView = (View) XposedHelpers
+                    .getObjectField(param.thisObject, "mStatusBarView");
+            Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             IntentFilter iF = new IntentFilter();
             iF.addAction(ACTION_CHANGE_STATUS_BAR);
             iF.addAction(Intent.ACTION_SCREEN_ON);
@@ -120,9 +121,10 @@ public class XPhoneStatusBar {
         View container = null;
 
         if (hasActionBar) {
-            container = (View)XposedHelpers.getObjectField(activity.getActionBar(),
+            container = (View) XposedHelpers.getObjectField(activity.getActionBar(),
                     "mContainerView");
-            Drawable mBackground = (Drawable)XposedHelpers.getObjectField(container, "mBackground");
+            Drawable mBackground = (Drawable) XposedHelpers
+                    .getObjectField(container, "mBackground");
 
             if (mBackground != null) {
                 tintColor = Utils.getMainColorFromActionBarDrawable(mBackground);
@@ -172,7 +174,8 @@ public class XPhoneStatusBar {
 
             if (hasActionBarLikeView) {
                 if (container != null) {
-                    Drawable backgroundDrawable = (Drawable)XposedHelpers.getObjectField(container,
+                    Drawable backgroundDrawable = (Drawable) XposedHelpers.getObjectField(
+                            container,
                             "mBackground");
                     if (backgroundDrawable != null) {
                         tintColor = Utils.getMainColorFromActionBarDrawable(backgroundDrawable);

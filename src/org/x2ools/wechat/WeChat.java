@@ -53,7 +53,7 @@ public class WeChat {
 
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                TextView tv = (TextView)param.thisObject;
+                TextView tv = (TextView) param.thisObject;
                 String font = x2ools_prefs.getString(X2oolsActivity.KEY_WECHAT_CHAT_FONT, "");
                 if (!TextUtils.isEmpty(font))
                     tv.setTypeface(Typeface.createFromFile(font));

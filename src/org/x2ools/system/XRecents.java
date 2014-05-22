@@ -36,7 +36,7 @@ public class XRecents {
 
         @Override
         protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-            mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+            mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
             boolean t9_search = prefs.getBoolean(X2oolsActivity.KEY_T9_SEARCH, true);
             if (t9_search) {

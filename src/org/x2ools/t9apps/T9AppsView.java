@@ -153,8 +153,8 @@ public class T9AppsView extends RelativeLayout {
             findViewById(id).setOnLongClickListener(mOnLongClickListener);
         }
         setOnClickListener(mOnClickListener);
-        mAppsGridView = (AppsGridView)findViewById(R.id.appsList);
-        mFilterView = (TextView)findViewById(R.id.numFilter);
+        mAppsGridView = (AppsGridView) findViewById(R.id.appsList);
+        mFilterView = (TextView) findViewById(R.id.numFilter);
 
         super.onFinishInflate();
     }
@@ -170,7 +170,7 @@ public class T9AppsView extends RelativeLayout {
     }
 
     private void hideView() {
-        ((Activity)mContext).finish();
+        ((Activity) mContext).finish();
     }
 
     public void onMainViewShow() {

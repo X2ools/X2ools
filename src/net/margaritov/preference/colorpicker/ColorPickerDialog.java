@@ -76,7 +76,7 @@ public class ColorPickerDialog extends Dialog implements ColorPickerView.OnColor
 
     private void setUp(int color) {
 
-        LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         View layout = inflater.inflate(R.layout.dialog_color_picker, null);
@@ -85,12 +85,12 @@ public class ColorPickerDialog extends Dialog implements ColorPickerView.OnColor
 
         setTitle(R.string.dialog_color_picker);
 
-        mColorPicker = (ColorPickerView)layout.findViewById(R.id.color_picker_view);
-        mOldColor = (ColorPickerPanelView)layout.findViewById(R.id.old_color_panel);
-        mAutoColor = (ColorPickerPanelView)layout.findViewById(R.id.auto_color_panel);
-        mNewColor = (ColorPickerPanelView)layout.findViewById(R.id.new_color_panel);
+        mColorPicker = (ColorPickerView) layout.findViewById(R.id.color_picker_view);
+        mOldColor = (ColorPickerPanelView) layout.findViewById(R.id.old_color_panel);
+        mAutoColor = (ColorPickerPanelView) layout.findViewById(R.id.auto_color_panel);
+        mNewColor = (ColorPickerPanelView) layout.findViewById(R.id.new_color_panel);
 
-        mHexVal = (EditText)layout.findViewById(R.id.hex_val);
+        mHexVal = (EditText) layout.findViewById(R.id.hex_val);
         mHexVal.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         mHexDefaultTextColor = mHexVal.getTextColors();
 
@@ -99,7 +99,7 @@ public class ColorPickerDialog extends Dialog implements ColorPickerView.OnColor
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(
                             Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     String s = mHexVal.getText().toString();
@@ -120,7 +120,7 @@ public class ColorPickerDialog extends Dialog implements ColorPickerView.OnColor
             }
         });
 
-        ((LinearLayout)mOldColor.getParent()).setPadding(
+        ((LinearLayout) mOldColor.getParent()).setPadding(
                 Math.round(mColorPicker.getDrawingOffset()), 0,
                 Math.round(mColorPicker.getDrawingOffset()), 0);
 
@@ -175,11 +175,11 @@ public class ColorPickerDialog extends Dialog implements ColorPickerView.OnColor
     private void updateHexLengthFilter() {
         if (getAlphaSliderVisible())
             mHexVal.setFilters(new InputFilter[] {
-                new InputFilter.LengthFilter(9)
+                    new InputFilter.LengthFilter(9)
             });
         else
             mHexVal.setFilters(new InputFilter[] {
-                new InputFilter.LengthFilter(7)
+                    new InputFilter.LengthFilter(7)
             });
     }
 

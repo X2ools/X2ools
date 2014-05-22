@@ -73,7 +73,7 @@ public class ViewDebugMocker extends Mocker {
                             dumpView.setAccessible(true);
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
                                     System.out, "utf-8"), 32 * 1024);
-                            dumpView.invoke(ViewDebug.class, mContext, (ViewGroup)toDump, writer,
+                            dumpView.invoke(ViewDebug.class, mContext, (ViewGroup) toDump, writer,
                                     0, skip, prop);
                             writer.flush();
                             writer.close();
@@ -102,7 +102,7 @@ public class ViewDebugMocker extends Mocker {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsByClass(vg.getChildAt(i), className, result);
             }
@@ -114,7 +114,7 @@ public class ViewDebugMocker extends Mocker {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsById(vg.getChildAt(i), id, result);
             }
@@ -130,7 +130,7 @@ public class ViewDebugMocker extends Mocker {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsByTag(vg.getChildAt(i), tag, result);
             }

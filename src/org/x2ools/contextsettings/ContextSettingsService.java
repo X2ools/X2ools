@@ -41,7 +41,7 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
     public void onCreate() {
         IntentFilter filter = new IntentFilter(ACTION_CONTEXT_SETTINGS);
         registerReceiver(mReceiver, filter);
-        mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getBoolean(X2oolsActivity.KEY_CONTEXT_SETTINGS, true)) {
             addView();
@@ -57,7 +57,7 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
 
     public void addView() {
         if (mParentView == null || mLayoutParams == null) {
-            mParentView = (ContextSettingsView)LayoutInflater.from(this)
+            mParentView = (ContextSettingsView) LayoutInflater.from(this)
                     .inflate(R.layout.context_settings, null)
                     .findViewById(R.id.contextSettingsView);
             mParentView.setCallBack(this);
@@ -103,8 +103,8 @@ public class ContextSettingsService extends Service implements ContextSettingsVi
 
     @Override
     public void onMoved(int dx, int dy) {
-        mLayoutParams.x = (int)dx;
-        mLayoutParams.y = (int)dy;
+        mLayoutParams.x = (int) dx;
+        mLayoutParams.y = (int) dy;
         Log.d(TAG, "updateViewLayout : " + mLayoutParams.x + " , " + mLayoutParams.y);
         mWindowManager.updateViewLayout(mParentView, mLayoutParams);
     }

@@ -1,20 +1,21 @@
 
 package org.x2ools.permission;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import org.x2ools.X2oolsActivity;
-import org.x2ools.X2oolsSharedPreferences;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+import org.x2ools.X2oolsActivity;
+import org.x2ools.X2oolsSharedPreferences;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class Permissions {
     protected static final String TAG = "Permissions : ";
@@ -115,8 +116,8 @@ public class Permissions {
 
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            Intent intent = new Intent((Intent)param.args[2]);
-                            int callingUid = (Integer)param.args[12];
+                            Intent intent = new Intent((Intent) param.args[2]);
+                            int callingUid = (Integer) param.args[12];
                             Object processRecordObject = param.args[0];
                             Field fieldPersistent = classProcessRecord
                                     .getDeclaredField("persistent");
@@ -164,18 +165,25 @@ public class Permissions {
 
                 });
 
-        Class<?> classPackageSetting = XposedHelpers.findClass(
-                "com.android.server.pm.PackageSetting", lpparam.classLoader);
-        Class<?> classPackageParser_Package = XposedHelpers.findClass(
-                "com.android.server.pm.PackageParser$Package", lpparam.classLoader);
-        
-        //TODO: hook verifySignaturesLP to decrease the code we need to compare signatrue
-        if(DEBUG_VERIFY_SIGNATURES) {
+        Class<?> classPackageSetting;
+        Class<?> classPackageParser_Package;
+        try {
+            classPackageSetting = XposedHelpers.findClass(
+                    "com.android.server.pm.PackageSetting", lpparam.classLoader);
+            classPackageParser_Package = XposedHelpers.findClass(
+                    "com.android.server.pm.PackageParser$Package", lpparam.classLoader);
+        } catch (Throwable t) {
+        }
+
+        // TODO: hook verifySignaturesLP to decrease the code we need to compare
+        // signatrue
+        if (DEBUG_VERIFY_SIGNATURES) {
             XposedBridge.log("hook verifySignaturesLP");
             XposedHelpers.findAndHookMethod(classPackageManagerService, "verifySignaturesLP",
                     classPackageSetting, classPackageParser_Package, new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                        protected Object replaceHookedMethod(MethodHookParam param)
+                                throws Throwable {
                             XposedBridge.log(new Throwable());
                             Log.d(TAG, "", new Throwable());
                             return true;// PackageManager.SignatureMatch

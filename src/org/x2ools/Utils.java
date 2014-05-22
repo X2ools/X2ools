@@ -1,8 +1,6 @@
 
 package org.x2ools;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -13,17 +11,24 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 public class Utils {
+    private static final String TAG = "Utils";
+
     public static void findViewsByClass(View v, String className, List<View> result) {
         if (v.getClass().getName().contains(className)) {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsByClass(vg.getChildAt(i), className, result);
             }
@@ -35,7 +40,7 @@ public class Utils {
             result.add(v);
         }
         if (v instanceof ViewGroup) {
-            ViewGroup vg = (ViewGroup)v;
+            ViewGroup vg = (ViewGroup) v;
             for (int i = 0; i < vg.getChildCount(); i++) {
                 findViewsById(vg.getChildAt(i), id, result);
             }
@@ -51,7 +56,28 @@ public class Utils {
         Drawable copyDrawable = drawable.getConstantState().newDrawable();
 
         if (copyDrawable instanceof ColorDrawable) {
-            return ((ColorDrawable)drawable).getColor();
+            return ((ColorDrawable) drawable).getColor();
+        }
+
+        if (copyDrawable instanceof GradientDrawable) {
+            Log.d(TAG, "getMainColorFromActionBarDrawable: GradientDrawable");
+            try {
+                Class<?> GradientDrawableClz = Class
+                        .forName("android.graphics.drawable.GradientDrawable");
+                Class<?> GradientStateclz = Class
+                        .forName("android.graphics.drawable.GradientDrawable$GradientState");
+                Field mGradientStateField = GradientDrawableClz.getDeclaredField("mGradientState");
+                Field mColorsField = GradientStateclz.getDeclaredField("mSolidColor");
+                mGradientStateField.setAccessible(true);
+                mColorsField.setAccessible(true);
+                Object mGradientState = mGradientStateField.get((GradientDrawable) copyDrawable);
+                int color = (Integer) mColorsField.get(mGradientState);
+                Log.d(TAG, "getMainColorFromActionBarDrawable: mSolidColor:" + color);
+                return color;
+            } catch (ClassNotFoundException e) {
+            } catch (IllegalAccessException e) {
+            } catch (NoSuchFieldException e) {
+            }
         }
 
         Bitmap bitmap = drawableToBitmap(copyDrawable);
@@ -77,7 +103,7 @@ public class Utils {
 
     public static Bitmap drawableToBitmap(Drawable drawable) throws IllegalArgumentException {
         if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable)drawable).getBitmap();
+            return ((BitmapDrawable) drawable).getBitmap();
         }
         Bitmap bitmap;
 
@@ -108,7 +134,7 @@ public class Utils {
 
     @SuppressLint("NewApi")
     public static boolean isKeyguardLocked(Context context) {
-        KeyguardManager kgm = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager kgm = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         boolean keyguardLocked;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {

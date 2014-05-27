@@ -2,17 +2,13 @@ X2ools
 ====
 ##功能演示
 
-1. T9搜索
-[T9搜索](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-54-06.png)
+###T9搜索![T9搜索](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-54-06.png)
 
-2. 状态栏自动变色
-[状态栏自动变色](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-42-14.png)
+###状态栏自动变色![状态栏自动变色](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-42-14.png)
 
-3. 快捷通知球
-[快捷通知球](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-58-43.png)
+###快捷设置窗口![快捷设置窗口](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-58-43.png)
 
-4.　调试工具，签名免验证
-[调试工具，签名免验证](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-39-45.png)
+###调试工具，签名免验证![调试工具，签名免验证](https://dl.dropboxusercontent.com/u/54004983/Screenshot_2014-05-27-12-39-45.png)
 
 ##Roadmap
 ###微信

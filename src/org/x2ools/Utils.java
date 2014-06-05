@@ -17,6 +17,10 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -143,5 +147,26 @@ public class Utils {
             keyguardLocked = kgm.inKeyguardRestrictedInputMode();
         }
         return keyguardLocked;
+    }
+    
+    /**
+     * Stores an image on the storage
+     * 
+     * @param image
+     *            the image to store.
+     * @param pictureFile
+     *            the file in which it must be stored
+     */
+    public static void storeImage(Bitmap image, File pictureFile) {
+        if (pictureFile == null) {
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
     }
 }

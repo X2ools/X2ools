@@ -24,14 +24,4 @@
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="t9_search_summary">使用T9应用搜索替代最近任务列表</string>
     <string name="t9_search_title">T9应用搜索</string>
-
-    <string name="t9_map_row_2">2abcàáâäåɑæçǽćčá</string>
-    <string name="t9_map_row_3">3deféèêë</string>
-    <string name="t9_map_row_4">4ghiíìïîǵ</string>
-    <string name="t9_map_row_5">5jklḱḱĺ</string>
-    <string name="t9_map_row_6">6mnoòóöôøñŋǿḿńő</string>
-    <string name="t9_map_row_7">7pqrsßɾṕŕśřš</string>
-    <string name="t9_map_row_8">8tuvúùüûű</string>
-    <string name="t9_map_row_9">9wxyzýẃź</string>
-    
 </resources>

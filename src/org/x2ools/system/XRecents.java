@@ -14,7 +14,6 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-import org.x2ools.Blur;
 import org.x2ools.Utils;
 import org.x2ools.X2oolsActivity;
 import org.x2ools.X2oolsApplication;
@@ -27,7 +26,7 @@ public class XRecents {
     public static final String PACKAGE_NAME = "com.android.systemui";
 
     private static Context mContext;
-    
+
     private static Class<?> SurfaceControl;
 
     public static void handleLoadPackage(LoadPackageParam lpparam) {
@@ -37,7 +36,8 @@ public class XRecents {
         Class<?> Recents = XposedHelpers.findClass("com.android.systemui.recent.Recents",
                 lpparam.classLoader);
         try {
-            SurfaceControl = XposedHelpers.findClass("android.view.SurfaceControl", lpparam.classLoader);
+            SurfaceControl = XposedHelpers.findClass("android.view.SurfaceControl",
+                    lpparam.classLoader);
         } catch (Throwable t) {
         }
 
@@ -70,31 +70,23 @@ public class XRecents {
     };
 
     private static void saveBlurBackground(Context context) {
-        Bitmap result = null;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        
+
         Bitmap shotBitmap = null;
         try {
             shotBitmap = (Bitmap) XposedHelpers.callStaticMethod(Surface.class, "screenshot",
                     Math.min(display.getWidth(), display.getHeight()) / 6,
                     Math.max(display.getWidth(), display.getHeight()) / 6);
         } catch (Throwable t) {
-            if(SurfaceControl != null) {
+            if (SurfaceControl != null) {
                 shotBitmap = (Bitmap) XposedHelpers.callStaticMethod(SurfaceControl, "screenshot",
                         Math.min(display.getWidth(), display.getHeight()) / 6,
                         Math.max(display.getWidth(), display.getHeight()) / 6);
             }
         }
-        if (shotBitmap.getWidth() > 1) {
-            result = Bitmap.createBitmap(shotBitmap.getWidth(), shotBitmap.getHeight(),
-                    Bitmap.Config.ARGB_8888);
-            result.eraseColor(0xFF000000);
-            result = Blur.fastblur(context, shotBitmap, 12);
-            shotBitmap.recycle();
-        }
-        if (result != null) {
-            Utils.storeImage(result, new File(X2oolsApplication.X2OOLS_DIR, "screenshot.png"));
+        if (shotBitmap != null) {
+            Utils.storeImage(shotBitmap, new File(X2oolsApplication.X2OOLS_DIR, "screenshot.png"));
         }
     }
 

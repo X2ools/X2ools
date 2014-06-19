@@ -18,18 +18,17 @@ public class Blur {
 	public static Bitmap fastblur(Context context, Bitmap sentBitmap, int radius) {
 
 		if (VERSION.SDK_INT > 16) {
-			Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+			Bitmap outBitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
-			final RenderScript rs = RenderScript.create(context);
-			final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
-					Allocation.USAGE_SCRIPT);
-			final Allocation output = Allocation.createTyped(rs, input.getType());
-			final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-			script.setRadius(radius /* e.g. 3.f */);
-			script.setInput(input);
-			script.forEach(output);
-			output.copyTo(bitmap);
-			return bitmap;
+			RenderScript rs = RenderScript.create(context);
+			ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));;
+			Allocation tmpIn = Allocation.createFromBitmap(rs, sentBitmap);
+			Allocation tmpOut = Allocation.createFromBitmap(rs, outBitmap);
+			theIntrinsic.setRadius(radius);
+			theIntrinsic.setInput(tmpIn);
+			theIntrinsic.forEach(tmpOut);
+			tmpOut.copyTo(outBitmap);
+			return outBitmap;
 		}
 
 		// Stack Blur v1.0 from

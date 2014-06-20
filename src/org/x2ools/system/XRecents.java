@@ -1,6 +1,7 @@
 
 package org.x2ools.system;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,7 +62,8 @@ public class XRecents {
                         | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 
                 intent.setClassName("org.x2ools", "org.x2ools.t9apps.T9AppsActivity");
-                mContext.startActivity(intent);
+                ActivityOptions opt = ActivityOptions.makeCustomAnimation(mContext, android.R.anim.fade_in, android.R.anim.fade_out);
+                mContext.startActivity(intent, opt.toBundle());
             } else {
                 XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
             }

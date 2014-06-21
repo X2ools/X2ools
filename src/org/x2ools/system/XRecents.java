@@ -53,9 +53,10 @@ public class XRecents {
         protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
             mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
             X2oolsSharedPreferences prefs = new X2oolsSharedPreferences();
+            boolean isPortrait = (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
             boolean t9_search = prefs.getBoolean(X2oolsActivity.KEY_T9_SEARCH, true);
-            if (t9_search) {
-                saveBlurBackground(mContext);
+            if (isPortrait && t9_search) {
+                saveScreenshot(mContext);
 
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -71,7 +72,7 @@ public class XRecents {
         }
     };
 
-    private static void saveBlurBackground(Context context) {
+    private static void saveScreenshot(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
 

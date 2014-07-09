@@ -192,5 +192,19 @@ public class Permissions {
                     });
         }
         /** Signatures end **/
+
+        /** isSystemSecure begin **/
+        final Class<?> classWindowManagerService = Class.forName("com.android.server.wm.WindowManagerService");
+        XposedHelpers.findAndHookMethod(classWindowManagerService, "isSystemSecure",
+                new XC_MethodReplacement() {
+
+                    @Override
+                    protected Object replaceHookedMethod(MethodHookParam param)
+                            throws Throwable {
+                        return false;
+                    }
+
+                });
+        /** isSystemSecure end **/
     }
 }

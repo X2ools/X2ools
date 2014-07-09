@@ -50,11 +50,6 @@
                 <action android:name="android.mock" />
             </intent-filter>
         </receiver>
-        <receiver android:name="BootReceiver" >
-            <intent-filter>
-                <action android:name="android.mock" />
-            </intent-filter>
-        </receiver>
 
         <service android:name="org.x2ools.contextsettings.ContextSettingsService" >
         </service>

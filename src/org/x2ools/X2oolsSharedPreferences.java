@@ -29,7 +29,7 @@ public class X2oolsSharedPreferences implements SharedPreferences {
 
     private boolean mSaved;
 
-    private JSONObject json;
+    private JSONObject json = new JSONObject();
 
     public X2oolsSharedPreferences() {
         mFile = new File(X2oolsApplication.X2OOLS_PREFS);
@@ -68,8 +68,6 @@ public class X2oolsSharedPreferences implements SharedPreferences {
 
                 json = new JSONObject(stringBuilder.toString());
                 bufferedReader.close();
-            } else {
-                json = new JSONObject();
             }
 
         } catch (IOException e) {

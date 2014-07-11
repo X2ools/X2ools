@@ -13,6 +13,8 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.plattysoft.leonids.ParticleSystem;
+
 import org.x2ools.contextsettings.ContextSettingsService;
 import org.x2ools.system.XPhoneStatusBar;
 
@@ -48,6 +50,9 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
     private SharedPreferences prefs;
 
     private X2oolsSharedPreferences x2ools_prefs;
+
+    private int mClickCount = 0;
+    private long mPrevClickTime = 0;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -135,6 +140,24 @@ public class X2oolsActivity extends PreferenceActivity implements OnSharedPrefer
             Toast.makeText(this, R.string.permission_work_after_reboot, Toast.LENGTH_LONG).show();
         }
         updateX2oolsPrefs();
+
+        long now = System.currentTimeMillis();
+
+        if (now - mPrevClickTime < 300) {
+            mClickCount++;
+        } else {
+            mClickCount = 0;
+        }
+
+        if (mClickCount > 3) {
+            new ParticleSystem(this, 100, R.drawable.ic_launcher, 1000)
+                    .setSpeedRange(0.2f, 0.5f)
+                    .setRotationSpeedRange(90, 180)
+                    .setInitialRotationRange(0, 360)
+                    .oneShot(getListView(), 100);
+        }
+
+        mPrevClickTime = now;
     }
 
     @Override
